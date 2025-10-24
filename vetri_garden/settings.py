@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n)u#%^k1$n#g@&g3xm@fumeun^*s67d5-i6xn8jx5_!x5ky6m#
 DEBUG = True
 
 # settings.py
-ALLOWED_HOSTS = ['your-render-service-url.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['vetri-garden.onrender.com', 'localhost']
 
 
 
