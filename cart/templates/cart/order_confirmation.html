@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vetri Garden - Order Confirmation</title>
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .email-container {
+      background: #fff;
+      max-width: 650px;
+      margin: 40px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(90deg, #1F4529, #416457);
+      padding: 30px;
+      text-align: center;
+    }
+    .header img {
+      max-width: 120px;
+      display: block;
+      margin: 0 auto 10px;
+    }
+    .header h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 0.5px;
+    }
+    .content {
+      padding: 30px;
+      line-height: 1.6;
+    }
+    .content h2 {
+      color: #1F4529;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .content p {
+      font-size: 15px;
+      margin: 6px 0;
+    }
+    .order-summary {
+      border-top: 2px solid #E8ECD7;
+      border-bottom: 2px solid #E8ECD7;
+      padding: 15px 0;
+      margin: 20px 0;
+    }
+    .order-summary h3 {
+      color: #1F4529;
+      margin-bottom: 10px;
+    }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+    .order-item span {
+      color: #1F4529;
+    }
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1F4529;
+      margin-top: 10px;
+      text-align: right;
+    }
+    .shipping {
+      background: #F7FBEF;
+      border-left: 5px solid #1F4529;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 12px 28px;
+      background: #1F4529;
+      color: #fff !important;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+    .cta-button:hover {
+      background: #ffc911;
+      color: #1F4529 !important;
+    }
+    .footer {
+      background: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+      line-height: 1.4;
+    }
+    .footer a {
+      color: #1F4529;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    @media screen and (max-width: 600px) {
+      .email-container {
+        width: 90%;
+        margin: 20px auto;
+      }
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="email-container">
+
+    <!-- Header -->
+    <div class="header">
+<img src="https://vetrigarden.in/static/images/plant22.png" 
+     alt="Vetri Garden Logo" 
+     onerror="this.src='https://cdn-icons-png.flaticon.com/512/765/765613.png'">
+      <h1>Order Confirmed!</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <h2>Hi {{ first_name }},</h2>
+      <p>
+        Thank you for shopping with <strong>Vetri Garden</strong> 🌿.<br>
+        Your order has been successfully placed and is being processed.
+      </p>
+
+      <p><strong>Order ID:</strong> #{{ order.id }}<br>
+         <strong>Payment Method:</strong> {{ payment_method }}</p>
+
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <h3>🪴 Order Summary</h3>
+        {% for item in cart_items %}
+          <div class="order-item">
+            <span>{{ item.name }}</span>
+            <span>₹{{ item.price }} × {{ item.quantity }}</span>
+          </div>
+        {% endfor %}
+        <div class="total">Total: ₹{{ total|floatformat:2 }}</div>
+      </div>
+
+      <!-- Shipping Address -->
+      <div class="shipping">
+        <h3>🚚 Shipping Address</h3>
+        <p>
+          {{ address }}<br>
+          {{ city }} - {{ postal_code }}<br>
+          📞 {{ phone }}
+        </p>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center;">
+        <a href="https://vetrigarden.in/track-order/{{ order.id }}" class="cta-button">
+          Track Your Order
+        </a>
+      </div>
+
+      <p style="margin-top: 30px;">
+        We’ll notify you once your items are shipped.<br>
+        Thank you for being part of the Vetri Garden family 💚
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Need help? <a href="https://vetrigarden.in/contact">Contact Support</a></p>
+      <p>&copy; {{ year }} Vetri Garden. All rights reserved.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>

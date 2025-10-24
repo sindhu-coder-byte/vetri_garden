@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Vetri Garden • Cart{% endblock %}
+
+{% block content %}
+<main class="bg-[#E8ECD7] min-h-screen pb-24 font-inter">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+
+    <h1 class="text-4xl font-bold text-[#1F4529] mb-10">🛒 Your Cart</h1>
+
+    {% if cart %}
+    <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-[#f7f9f4]">
+            <tr>
+              <th class="py-3 px-6 text-[#1F4529] font-semibold">Product</th>
+              <th class="py-3 px-6 text-[#1F4529] font-semibold">Price</th>
+              <th class="py-3 px-6 text-[#1F4529] font-semibold">Quantity</th>
+              <th class="py-3 px-6 text-[#1F4529] font-semibold">Subtotal</th>
+              <th class="py-3 px-6 text-[#1F4529] font-semibold">Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key, item in cart.items %}
+            <tr class="border-t border-[#E5E7EB] hover:bg-[#f7f9f4] transition">
+              <!-- Product -->
+              <td class="py-4 px-6 flex items-center gap-4">
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="h-20 w-20 object-contain rounded-lg border border-gray-200">
+                <span class="font-medium text-[#1F4529]">{{ item.name }}</span>
+              </td>
+
+              <!-- Price -->
+              <td class="py-4 px-6 text-[#416457] font-semibold">₹{{ item.price|floatformat:2 }}</td>
+
+              <!-- Quantity -->
+              <td class="py-4 px-6">
+                <div class="flex items-center border border-[#1F4529] rounded-md overflow-hidden w-fit">
+                  <a href="{% url 'add_to_cart' key %}?quantity=-1&next={{ request.path }}"
+                     class="px-3 py-1 text-[#1F4529] hover:bg-[#1F4529] hover:text-white transition">−</a>
+                  <span class="px-4 text-[#1F4529] font-semibold bg-[#f8faf6]">{{ item.quantity }}</span>
+                  <a href="{% url 'add_to_cart' key %}?quantity=1&next={{ request.path }}"
+                     class="px-3 py-1 text-[#1F4529] hover:bg-[#1F4529] hover:text-white transition">+</a>
+                </div>
+              </td>
+
+              <!-- Subtotal -->
+              <td class="py-4 px-6 text-[#1F4529] font-semibold">₹{{ item.subtotal|floatformat:2 }}</td>
+
+              <!-- Remove -->
+              <td class="py-4 px-6">
+                <a href="{% url 'remove_from_cart' key %}" 
+                   class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Remove</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Total & Checkout -->
+    <div class="mt-10 flex flex-col sm:flex-row justify-end items-center gap-6">
+      <div class="text-right">
+        <p class="text-2xl font-bold text-[#1F4529]">Total:</p>
+        <p class="text-3xl font-bold text-[#ffc911] mt-1">₹{{ total|floatformat:2 }}</p>
+      </div>
+      <a href="{% url 'checkout' %}" class="px-6 py-3 bg-[#1F4529] text-white font-semibold rounded-full hover:bg-[#ffc911] hover:text-black transition">Proceed to Checkout</a>
+
+    </div>
+
+    {% else %}
+    <div class="text-center py-16 bg-white rounded-3xl shadow-md">
+      <p class="text-[#416457] text-lg">
+        Your cart is empty. 
+        <a href="{% url 'home' %}" class="text-[#1F4529] font-semibold hover:underline">Continue shopping</a>.
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+</main>
+{% endblock %}

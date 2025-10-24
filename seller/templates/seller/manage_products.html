@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Manage Products - Seller{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto mt-10 bg-white p-8 rounded-xl shadow-lg">
+  <h2 class="text-2xl font-bold text-[#1f4529] mb-6">Your Products</h2>
+  {% if products %}
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="bg-[#416457] text-white">
+          <th class="p-2">Image</th>
+          <th class="p-2">Name</th>
+          <th class="p-2">Price</th>
+          <th class="p-2">Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr class="border-b">
+          <td class="p-2"><img src="{{ product.image.url }}" class="h-12 w-12 rounded-lg"></td>
+          <td class="p-2">{{ product.name }}</td>
+          <td class="p-2">₹{{ product.price }}</td>
+          <td class="p-2">{{ product.stock }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No products found. <a href="{% url 'seller:add_product' %}" class="text-[#1f4529] underline">Add one now!</a></p>
+  {% endif %}
+</div>
+{% endblock %}

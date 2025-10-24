@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Reports - Seller{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg mt-10 text-center">
+  <h2 class="text-3xl font-bold text-[#1f4529] mb-6">Sales Report</h2>
+  <div class="grid sm:grid-cols-3 gap-6">
+    <div class="bg-[#E8ECD7] p-6 rounded-xl">
+      <h3 class="text-lg font-semibold text-[#416457]">Total Revenue</h3>
+      <p class="text-2xl font-bold mt-2">₹{{ total_revenue }}</p>
+    </div>
+    <div class="bg-[#E8ECD7] p-6 rounded-xl">
+      <h3 class="text-lg font-semibold text-[#416457]">Total Orders</h3>
+      <p class="text-2xl font-bold mt-2">{{ total_orders }}</p>
+    </div>
+    <div class="bg-[#E8ECD7] p-6 rounded-xl">
+      <h3 class="text-lg font-semibold text-[#416457]">Total Products</h3>
+      <p class="text-2xl font-bold mt-2">{{ total_products }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

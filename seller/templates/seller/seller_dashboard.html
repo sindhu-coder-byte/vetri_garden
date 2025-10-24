@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seller Dashboard • Vetri Garden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Inter&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --green-dark: #1F4529;
+      --green-light: #416457;
+      --yellow: #ffc911;
+      --bg-light: #E8ECD7;
+      --white: #ffffff;
+      --font: 'Montserrat', 'Inter', sans-serif;
+    }
+    body { font-family: var(--font); background-color: var(--bg-light); }
+    .card { background-color: var(--white); border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; }
+    .sidebar a { display: block; padding: 10px 20px; margin-bottom: 2px; border-radius: 8px; font-weight: 500; color: var(--white); transition: all 0.3s; }
+    .sidebar a:hover { background-color: var(--yellow); color: var(--green-dark); transform: translateX(4px); }
+  </style>
+</head>
+<body class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="sidebar w-64 bg-[var(--green-dark)] p-6 flex flex-col">
+    <h1 class="text-2xl font-bold text-white mb-8">Vetri Garden</h1>
+    <nav class="flex flex-col gap-2">
+      <a href="{% url 'seller:dashboard' %}">Dashboard</a>
+      <a href="{% url 'seller:add_product' %}">Add Product</a>
+      <a href="{% url 'seller:manage_products' %}">Manage Products</a>
+      <a href="{% url 'seller:orders' %}">Orders</a>
+      <a href="{% url 'seller:reports' %}">Reports</a>
+      <form method="POST" action="{% url 'accounts:logout' %}" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="w-full text-left text-white hover:bg-[var(--yellow)] hover:text-[var(--green-dark)] px-4 py-2 rounded-lg transition">
+          Logout
+        </button>
+      </form>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h2 class="text-3xl font-semibold text-[var(--green-dark)] mb-6">Welcome, {{ user.username }} 🌿</h2>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="card">
+        <h3 class="font-semibold text-lg text-gray-600">Total Products</h3>
+        <p class="text-2xl font-bold mt-2">{{ total_products }}</p>
+      </div>
+      <div class="card">
+        <h3 class="font-semibold text-lg text-gray-600">Orders Received</h3>
+        <p class="text-2xl font-bold mt-2">{{ total_orders }}</p>
+      </div>
+      <div class="card">
+        <h3 class="font-semibold text-lg text-gray-600">Pending Orders</h3>
+        <p class="text-2xl font-bold mt-2">{{ pending_orders }}</p>
+      </div>
+      <div class="card">
+        <h3 class="font-semibold text-lg text-gray-600">Revenue</h3>
+        <p class="text-2xl font-bold mt-2">₹{{ total_revenue }}</p>
+      </div>
+    </div>
+
+    <!-- Recent Orders Table -->
+    <div class="card">
+      <h3 class="font-semibold text-xl text-[var(--green-dark)] mb-4">Recent Orders</h3>
+      {% if recent_orders %}
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-[var(--green-light)] text-white">
+              <th class="p-2 rounded-tl-lg">Order ID</th>
+              <th class="p-2">Customer</th>
+              <th class="p-2">Product</th>
+              <th class="p-2">Quantity</th>
+              <th class="p-2">Status</th>
+              <th class="p-2 rounded-tr-lg">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in recent_orders %}
+              {% for item in order.items.all %}
+                {% if item.product.seller == user %}
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="p-2">{{ order.id }}</td>
+                    <td class="p-2">{{ order.user.username }}</td>
+                    <td class="p-2">{{ item.product.name }}</td>
+                    <td class="p-2">{{ item.quantity }}</td>
+                    <td class="p-2">{{ order.status }}</td>
+                    <td class="p-2">{{ order.created_at|date:"d M Y" }}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="text-gray-600">No recent orders found.</p>
+      {% endif %}
+    </div>
+  </main>
+</body>
+</html>

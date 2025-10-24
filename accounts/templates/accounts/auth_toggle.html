@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% if mode == 'signup' %}Sign Up{% else %}Sign In{% endif %} • Vetri Garden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Inter&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --green-dark: #1F4529;
+      --green-light: #416457;
+      --yellow: #ffc911;
+      --bg-light: #E8ECD7;
+      --white: #ffffff;
+      --font: 'Montserrat', 'Inter', sans-serif;
+    }
+    body { background-color: var(--bg-light); font-family: var(--font); }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; }
+    input:focus, select:focus { border-color: var(--green-dark); box-shadow: 0 0 4px var(--green-light); }
+    label { font-weight: 600; color: var(--green-dark); }
+    .errorlist { color: red; font-size: 0.9rem; margin-bottom: 5px; }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+  <div class="bg-white shadow-2xl rounded-3xl w-[90%] max-w-3xl grid md:grid-cols-2 overflow-hidden">
+
+    <!-- 🌿 Left Side -->
+    <div class="bg-[var(--green-dark)] text-white flex flex-col justify-center items-center p-10">
+      <h1 class="text-4xl font-bold mb-4">Vetri Garden 🌿</h1>
+      <p class="text-lg text-center mb-8">
+        {% if mode == 'signup' %}
+          Already have an account? Log in below.
+        {% else %}
+          New here? Join and grow with us!
+        {% endif %}
+      </p>
+      <button id="toggleBtn"
+        class="bg-[var(--yellow)] text-[var(--green-dark)] px-6 py-2 rounded-full font-semibold transition hover:bg-white hover:text-[var(--green-dark)]">
+        {% if mode == 'signup' %}Go to Login{% else %}Create Account{% endif %}
+      </button>
+    </div>
+
+    <!-- 🌸 Right Side: Form -->
+    <div class="p-10 flex flex-col justify-center">
+      <h2 class="text-3xl font-bold text-[var(--green-dark)] mb-6">
+        {% if mode == 'signup' %}Sign Up{% else %}Sign In{% endif %}
+      </h2>
+
+      <form method="POST" class="flex flex-col gap-4">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div>
+          {{ form.username.label_tag }}
+          {{ form.username }}
+          {{ form.username.errors }}
+        </div>
+
+        {% if mode == 'signup' %}
+        <!-- Profile Image -->
+<div>
+  <label for="id_profile_image">Profile Image</label>
+  {{ form.profile_image }}
+  {{ form.profile_image.errors }}
+</div>
+
+<!-- Address -->
+<div>
+  <label for="id_address">Address</label>
+  {{ form.address }}
+  {{ form.address.errors }}
+</div>
+          <!-- Email -->
+          <div>
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {{ form.email.errors }}
+          </div>
+
+          <!-- Phone -->
+          <div>
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
+            {{ form.phone.errors }}
+          </div>
+
+          <!-- Role -->
+          <div>
+            <label for="id_role">Role</label>
+            <select name="role" id="id_role" class="border rounded p-2">
+              <option value="customer" selected>Customer 🌱</option>
+              <option value="seller">Seller 🛒</option>
+            </select>
+          </div>
+
+          <!-- Password -->
+          <div>
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+          </div>
+
+          <div>
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+          </div>
+
+        {% else %}
+          <!-- Password for Sign In -->
+          <div>
+            <label for="id_password">Password</label>
+            {{ form.password }}
+            {{ form.password.errors }}
+          </div>
+        {% endif %}
+
+        <button type="submit"
+          class="mt-4 bg-[var(--green-dark)] text-white py-2 rounded-full hover:bg-[var(--yellow)] hover:text-[var(--green-dark)] transition font-semibold">
+          {% if mode == 'signup' %}Register{% else %}Login{% endif %}
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Toggle Between Login & Signup -->
+  <script>
+    document.getElementById("toggleBtn").onclick = function() {
+      const url = window.location.pathname.includes('register')
+        ? "{% url 'accounts:login' %}"
+        : "{% url 'accounts:register' %}";
+      window.location.href = url;
+    };
+  </script>
+
+</body>
+</html>

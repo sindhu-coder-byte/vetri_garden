@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+{% block title %}Payment - Vetri Garden{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center bg-[#E8ECD7] px-6 py-12">
+  <div class="bg-white p-10 rounded-3xl shadow-2xl max-w-md w-full text-center transform transition hover:-translate-y-1 hover:shadow-3xl">
+    <h2 class="text-4xl font-extrabold text-[#1F4529] mb-3">Secure Payment</h2>
+    <p class="text-gray-600 mb-6 text-lg">
+      <span class="font-semibold text-[#1F4529]">Order #{{ order.id }}</span> |
+      Total: <span class="text-[#416457] font-bold">₹{{ total }}</span>
+    </p>
+
+    <form id="razorpay-form" method="POST" action="{% url 'payment_success' %}">
+      {% csrf_token %}
+      <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+      <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+      <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+
+      <button id="rzp-button"
+        class="px-8 py-3 rounded-full text-white font-semibold text-lg bg-[#1F4529] hover:bg-[#416457] transition duration-300 ease-in-out shadow-md hover:shadow-lg">
+        💳 Pay Securely
+      </button>
+    </form>
+
+    <p class="text-gray-500 mt-6 text-sm">Transactions are encrypted and secure 🔒</p>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById("rzp-button").onclick = function(e){
+    e.preventDefault();
+    var options = {
+      "key": "{{ razorpay_key }}",
+      "amount": "{{ razorpay_amount }}",
+      "currency": "INR",
+      "name": "Vetri Garden",
+      "description": "Order #{{ order.id }}",
+      "order_id": "{{ razorpay_order_id }}",
+      "handler": function (response){
+          document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+          document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+          document.getElementById('razorpay_signature').value = response.razorpay_signature;
+          document.getElementById('razorpay-form').submit();
+      },
+      "theme": {
+          "color": "#1F4529"
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+}
+</script>
+{% endblock %}

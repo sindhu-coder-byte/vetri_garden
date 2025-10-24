@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - Vetri Garden{% endblock %}
+
+{% block content %}
+
+<section id="about-us" class="bg-white py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    
+    <!-- Heading -->
+    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#1f4529] mb-10 text-center md:text-left">
+      About Us
+    </h2>
+
+    <!-- Row 1: Text Left + Image Right -->
+    <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
+      
+      <!-- Left Content -->
+      <div class="md:w-1/2 bg-white p-6">
+        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-[#1f4529] mb-3">Who We Are</h3>
+        <p class="text-sm sm:text-base md:text-lg text-[#1f4529]/80 leading-6 md:leading-7">
+          Founded in 2025, Vetri Garden was created to make plant care easy, beautiful, and accessible
+          for everyone from first-time plant parents to lifelong gardeners. Our mission is to bring 
+          greenery into every home with thoughtfully selected plants, helpful care tips, and a seamless online
+          experience. At Vetri Garden, we're more than just a plant store.
+        </p>
+      </div>
+
+      <!-- Right Image -->
+      <div class="md:w-1/2">
+        <img src="{% static 'images/plant9.png' %}" alt="About Vetri Garden"
+             class="w-full rounded-[5px] border-[20px] border-[#1f4529] rounded-tl-[120px] rounded-br-[120px] shadow-md">
+      </div>
+    </div>
+
+    <!-- Row 2: Image Left + Text Right -->
+    <div class="flex flex-col md:flex-row items-center gap-8">
+      
+      <!-- Left Image -->
+      <div class="md:w-1/2 order-1 md:order-none">
+        <img src="{% static 'images/plant10.png' %}" alt="What We Offer"
+             class="w-full rounded-[5px] border-[20px] border-[#1f4529] rounded-bl-[120px] rounded-tr-[120px] shadow-md">
+      </div>
+
+      <!-- Right Content -->
+      <div class="md:w-1/2 bg-white p-6 order-none md:order-1">
+        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-[#1f4529] mb-3">What We Offer</h3>
+        <ul class="text-sm sm:text-base md:text-lg text-[#1f4529]/80 leading-6 md:leading-7 list-disc pl-5 space-y-2">
+          <li>Healthy, hand-selected indoor and outdoor plants</li>
+          <li>Safe, eco-friendly packaging and doorstep delivery</li>
+          <li>Easy-to-follow care guides for every plant</li>
+          <li>A nature-inspired shopping experience for every lifestyle</li>
+        </ul>
+        <p class="mt-3 text-sm sm:text-base md:text-lg text-[#1f4529]/80 leading-6 md:leading-7">
+          Our best-selling plant bundles make it easy for beginners to get started with confidence.
+          Each plant comes with easy-to-follow care tips, so you always know how to help it thrive.
+          We offer doorstep delivery across cities with safe and eco-friendly packaging.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Vetri Garden • Checkout{% endblock %}
+
+{% block content %}
+<main class="bg-[#E8ECD7] min-h-screen py-16 font-inter">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10">
+
+    <!-- LEFT SIDE: Shipping Details -->
+    <section class="bg-white shadow-2xl rounded-3xl p-10 transition-transform hover:-translate-y-1 duration-300">
+      <h2 class="text-4xl font-bold text-[#1F4529] mb-8 border-b-4 border-[#ffc911] inline-block pb-2">
+        Shipping Details
+      </h2>
+
+      <form action="{% url 'place_order' %}" method="POST" class="space-y-6">
+        {% csrf_token %}
+
+        <!-- Name -->
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-[#1F4529] mb-2">First Name</label>
+            <input type="text" name="first_name" required
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-[#1F4529] outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-[#1F4529] mb-2">Last Name</label>
+            <input type="text" name="last_name" required
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-[#1F4529] outline-none">
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-[#1F4529] mb-2">Email</label>
+            <input type="email" name="email" required
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-[#1F4529] outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-[#1F4529] mb-2">Phone</label>
+            <input type="text" name="phone" required
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-[#1F4529] outline-none">
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label class="block text-sm font-semibold text-[#1F4529] mb-2">Address</label>
+          <textarea name="address" rows="3" required
+            class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-[#1F4529] outline-none"></textarea>
+        </div>
+
+        <!-- City + Postal -->
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-[#1F4529] mb-2">City</label>
+            <input type="text" name="city" required
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-[#1F4529] outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-[#1F4529] mb-2">Postal Code</label>
+            <input type="text" name="postal_code" required
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-[#1F4529] outline-none">
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div>
+          <label class="block text-sm font-semibold text-[#1F4529] mb-2">Payment Method</label>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <label class="flex items-center gap-2 cursor-pointer border border-gray-300 px-4 py-2 rounded-md hover:bg-[#F7FBEF] transition">
+              <input type="radio" name="payment_method" value="COD" checked>
+              <span class="text-[#1F4529] font-medium">Cash on Delivery</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer border border-gray-300 px-4 py-2 rounded-md hover:bg-[#F7FBEF] transition">
+              <input type="radio" name="payment_method" value="Online">
+              <span class="text-[#1F4529] font-medium">Online Payment</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Button -->
+        <button type="submit"
+          class="w-full bg-gradient-to-r from-[#1F4529] to-[#416457] text-white py-3 rounded-full font-semibold text-lg hover:from-[#ffc911] hover:to-[#ffd84b] hover:text-[#1F4529] transition">
+          Place Order
+        </button>
+
+      </form>
+    </section>
+
+    <!-- RIGHT SIDE: Order Summary -->
+    <aside class="bg-white shadow-2xl rounded-3xl p-10 h-fit transition-transform hover:-translate-y-1 duration-300">
+      <h2 class="text-4xl font-bold text-[#1F4529] mb-8 border-b-4 border-[#ffc911] inline-block pb-2">
+        Order Summary
+      </h2>
+
+      {% if cart %}
+      <div class="divide-y divide-gray-200">
+        {% for key, item in cart.items %}
+        <div class="flex items-center justify-between py-4">
+          <div class="flex items-center gap-4">
+            <img src="{{ item.image }}" alt="{{ item.name }}"
+              class="h-16 w-16 object-contain rounded-lg border border-gray-200 bg-gray-50">
+            <div>
+              <p class="font-semibold text-[#1F4529]">{{ item.name }}</p>
+              <p class="text-sm text-gray-600">Qty: {{ item.quantity }}</p>
+            </div>
+           
+          </div>
+               <p class="flex justify-between text-lg text-[#1F4529] font-semibold">₹{{ item.price}}</p>
+
+          <p class="text-[#1F4529] font-semibold">{{ item.subtotal|floatformat:2 }}</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="mt-6 border-t border-gray-200 pt-4 space-y-2">
+        <div class="flex justify-between text-lg font-semibold text-[#1F4529]">
+          <span>Subtotal:</span>
+          <span>₹{{ total|floatformat:2 }}</span>
+        </div>
+        <div class="flex justify-between text-sm text-gray-600">
+          <span>Shipping:</span>
+          <span>Free</span>
+        </div>
+        <div class="flex justify-between text-2xl font-bold text-[#1F4529] mt-2">
+          <span>Total:</span>
+          <span class="text-[#ffc911]">₹{{ total|floatformat:2 }}</span>
+        </div>
+      </div>
+
+      {% else %}
+      <p class="text-[#416457] text-center py-10 text-lg">Your cart is empty.</p>
+      {% endif %}
+    </aside>
+
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed - Vetri Garden</title>
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #E8ECD7;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .confirmation-card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 50px 35px;
+      max-width: 430px;
+      text-align: center;
+      position: relative;
+      animation: fadeInUp 0.8s ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .confirmation-card img {
+      max-width: 150px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .confirmation-card h1 {
+      font-size: 24px;
+      color: #1F4529;
+      margin: 15px 0 10px 0;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .confirmation-card p {
+      color: #444;
+      font-size: 15px;
+      margin: 12px 0 25px 0;
+      line-height: 1.6;
+    }
+
+    .track-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background-color: #1F4529;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .track-btn:hover {
+      background-color: #ffc911;
+      color: #1F4529;
+      transform: translateY(-2px);
+    }
+
+    .check-icon {
+      color: #2E7D32;
+      font-size: 22px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    .footer {
+      font-size: 13px;
+      color: #777;
+      margin-top: 25px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .confirmation-card {
+        margin: 20px;
+        padding: 40px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confirmation-card">
+    <h1>
+      Thank You! <span class="check-icon">&#10004;</span><br>
+      Your order has been confirmed.
+    </h1>
+
+    <img src="{% static 'images/plantAnimation.gif' %}" alt="Order Confirmed">
+
+    <p>“Your new green friend is on the way 🌱<br>Get ready to welcome it home.”</p>
+
+    <a href="{% url 'home' %}" class="track-btn">Continue Shopping</a>
+
+    <div class="footer">
+      &copy; {{ year|default:"2025" }} Vetri Garden. All rights reserved.
+    </div>
+  </div>
+
+</body>
+</html>

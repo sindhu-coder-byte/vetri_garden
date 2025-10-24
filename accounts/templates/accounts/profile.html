@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile • {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#E8ECD7] flex items-start justify-center py-16 px-6">
+  <div class="bg-white shadow-2xl rounded-3xl w-full max-w-6xl grid md:grid-cols-2 overflow-hidden transition-all duration-500">
+
+    <!-- LEFT SIDE - USER DETAILS -->
+    <div class="bg-[#1f4529] text-white p-10 flex flex-col justify-between">
+      <div>
+        <!-- Profile Header -->
+        <div class="flex items-center gap-4 mb-8">
+          <img src="{% static 'images/profile-icon.png' %}" alt="Profile"
+               class="w-16 h-16 rounded-full bg-white p-2 shadow-lg ring-2 ring-[#ffc911] animate-fadeIn">
+          <div>
+            <h2 class="text-2xl font-bold tracking-wide">{{ user.first_name|default:user.username }}</h2>
+            <p class="text-sm opacity-80 capitalize">{{ user.role }}</p>
+          </div>
+        </div>
+
+        <!-- Personal Information -->
+        <h3 class="text-lg font-semibold mb-4 border-b border-white/20 pb-2">Personal Information</h3>
+        <div class="space-y-3 text-sm leading-relaxed animate-fadeIn">
+          <div class="grid grid-cols-2 gap-2">
+            <p class="font-semibold opacity-80">Username:</p>
+            <p>{{ user.username }}</p>
+
+            <p class="font-semibold opacity-80">Full Name:</p>
+            <p>{{ user.first_name }} {{ user.last_name }}</p>
+
+            <p class="font-semibold opacity-80">Email:</p>
+            <p>{{ user.email|default:"Not Provided" }}</p>
+
+            <p class="font-semibold opacity-80">Phone:</p>
+            <p>{{ user.phone|default:"Not Provided" }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logout Button -->
+      <form action="{% url 'accounts:logout' %}" method="POST" class="mt-10 animate-slideUp">
+        {% csrf_token %}
+        <button type="submit"
+          class="bg-[#ffc911] text-[#1f4529] px-6 py-2.5 rounded-full font-semibold hover:bg-white hover:text-[#1f4529] transition duration-300 shadow-md hover:shadow-lg">
+          Logout
+        </button>
+      </form>
+    </div>
+
+    <!-- RIGHT SIDE - ORDERS DASHBOARD -->
+    <div class="p-10 flex flex-col gap-8 bg-gradient-to-br from-[#f9fbe7] to-[#ffffff]">
+      <div>
+        <h2 class="text-3xl font-bold text-[#1f4529] mb-3">My Dashboard</h2>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Track your orders, manage addresses, and update your details easily.
+        </p>
+      </div>
+
+      <!-- 🛍️ Orders -->
+      <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-md border border-[#1f4529]/10">
+        <h3 class="text-2xl font-semibold text-[#1f4529] mb-4 flex items-center gap-2">
+          🛍️ My Orders
+        </h3>
+
+        {% if orders %}
+          <div class="space-y-4 max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-[#1f4529]/30 scrollbar-track-transparent">
+            {% for order in orders %}
+              {% with first_item=order.items.all.0 %}
+              <div class="border border-gray-200 p-4 rounded-xl bg-white shadow-sm hover:shadow-lg transition duration-300 hover:scale-[1.01]">
+                <div class="flex items-center gap-4 mb-2">
+                  {% if first_item.product.image %}
+                    <img src="{{ first_item.product.image.url }}" alt="{{ first_item.product.name }}" class="w-16 h-16 rounded-lg object-cover border">
+                  {% else %}
+                    <img src="{% static 'images/no-image.png' %}" alt="No Image" class="w-16 h-16 rounded-lg border bg-gray-100">
+                  {% endif %}
+                  <div class="flex flex-col">
+                    <h4 class="font-semibold text-[#1f4529] text-base">{{ first_item.product.name }}</h4>
+                    <p class="text-sm text-gray-600">Quantity: {{ first_item.quantity }} | Total: ₹{{ first_item.total_price }}</p>
+                    <span class="text-xs font-medium px-3 py-1 rounded-full mt-1
+                      {% if order.status == 'placed' %}bg-yellow-100 text-yellow-800
+                      {% elif order.status == 'delivered' %}bg-green-100 text-green-800
+                      {% elif order.status == 'cancelled' %}bg-red-100 text-red-800
+                      {% else %}bg-gray-100 text-gray-800{% endif %}">
+                      {{ order.get_status_display }}
+                    </span>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-600">Order ID: #{{ order.id }}</p>
+                {% if order.address %}
+                  <p class="text-xs text-gray-500 mt-1">Delivery: {{ order.address }}</p>
+                {% endif %}
+                <p class="text-xs text-gray-400 mt-1">Ordered on {{ order.created_at|date:"M d, Y, h:i A" }}</p>
+              </div>
+              {% endwith %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-gray-600 italic">No orders placed yet.</p>
+        {% endif %}
+      </div>
+
+      <!-- ⚙️ Account Management -->
+      <div class="grid gap-5 mt-6 animate-fadeIn">
+        <a href="#" class="flex items-center justify-between border border-gray-200 p-5 rounded-2xl hover:bg-[#f9fbe7] hover:border-[#1f4529] transition shadow-sm hover:shadow-md">
+          <span class="flex items-center gap-2 text-[#1f4529] font-medium">📍 Manage Addresses</span>
+          <span class="text-[#1f4529] font-bold text-lg">›</span>
+        </a>
+
+        <a href="#" class="flex items-center justify-between border border-gray-200 p-5 rounded-2xl hover:bg-[#f9fbe7] hover:border-[#1f4529] transition shadow-sm hover:shadow-md">
+          <span class="flex items-center gap-2 text-[#1f4529] font-medium">💳 Payment Methods</span>
+          <span class="text-[#1f4529] font-bold text-lg">›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Animations and Scrollbar Styling ===== -->
+<style>
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { border-radius: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fadeIn { animation: fadeIn 0.8s ease-in-out; }
+  .animate-slideUp { animation: slideUp 0.7s ease-in-out; }
+</style>
+{% endblock %}

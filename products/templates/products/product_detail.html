@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Vetri Garden • {{ product.name }}{% endblock %}
+
+{% block content %}
+<main class="bg-[#E8ECD7] min-h-screen pb-24 font-inter">
+
+  <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
+
+    <!-- Left Side: Images -->
+    <div class="flex flex-col items-center">
+      <div class="bg-[#416457] p-6 rounded-3xl mb-6">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="object-contain h-80 w-80">
+      </div>
+      <!-- Thumbnails -->
+      <div class="flex gap-4">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="h-20 w-20 object-contain rounded-lg border-2 border-[#ffc911] cursor-pointer">
+        {% endif %}
+      </div>
+      <p class="mt-4 text-[#1F4529] font-semibold text-center">{{ product.get_category_display }}</p>
+    </div>
+
+    <!-- Right Side: Product Info -->
+    <div class="flex flex-col gap-4">
+      <h1 class="text-4xl font-bold text-[#1F4529]">{{ product.name }}</h1>
+      <p class="text-[#416457] text-lg">{{ product.description }}</p>
+
+      <!-- Price -->
+      <div class="flex items-center gap-4 text-2xl">
+        <span class="line-through text-[#a1a909]">₹{{ product.price|add:"200" }}</span>
+        <span class="font-bold text-[#1F4529]">₹{{ product.price }}</span>
+      </div>
+
+      <!-- Rating -->
+      <div class="flex items-center gap-2">
+        <span class="text-[#ffc911]">★★★★☆</span>
+        <span class="text-[#1F4529] font-semibold">4.0</span>
+      </div>
+
+      <!-- Size Options -->
+      <div class="flex gap-2 mt-4">
+        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">S</button>
+        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">M</button>
+        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">L</button>
+        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">XL</button>
+      </div>
+
+      <!-- Quantity + Buy Button -->
+      <div class="flex items-center gap-4 mt-6">
+        <!-- Quantity Box -->
+        <div class="flex items-center border border-[#1F4529] rounded-md overflow-hidden">
+          <button id="decrease" class="px-4 py-2 text-[#1F4529] font-semibold hover:bg-[#1F4529] hover:text-white transition">-</button>
+          <input 
+            id="quantity"
+            type="text" 
+            value="1" 
+            class="w-12 text-center text-[#1F4529] font-medium border-x border-[#1F4529] focus:outline-none"
+          >
+          <button id="increase" class="px-4 py-2 text-[#1F4529] font-semibold hover:bg-[#1F4529] hover:text-white transition">+</button>
+        </div>
+
+        <!-- Buy Now Button -->
+        <a 
+          id="buy-now" 
+          href="{% url 'add_to_cart' product.id %}?quantity=1" 
+          class="px-6 py-3 bg-[#1F4529] text-white font-semibold rounded-full hover:bg-[#ffc911] hover:text-black transition"
+        >
+          Buy Now
+        </a>
+      </div>
+
+      <!-- Care Instructions -->
+      <div class="mt-10">
+        <h2 class="text-2xl font-semibold text-[#1F4529] mb-2">Care Instructions</h2>
+        <p class="text-[#416457]">{{ product.care_instructions|default:"Care instructions will be added soon." }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<!-- Quantity JS -->
+<script>
+  const quantityInput = document.getElementById('quantity');
+  const increaseBtn = document.getElementById('increase');
+  const decreaseBtn = document.getElementById('decrease');
+  const buyNowBtn = document.getElementById('buy-now');
+
+  increaseBtn.addEventListener('click', () => {
+    quantityInput.value = parseInt(quantityInput.value) + 1;
+    updateCartLink();
+  });
+
+  decreaseBtn.addEventListener('click', () => {
+    if (parseInt(quantityInput.value) > 1) {
+      quantityInput.value = parseInt(quantityInput.value) - 1;
+      updateCartLink();
+    }
+  });
+
+  function updateCartLink() {
+    buyNowBtn.href = "{% url 'add_to_cart' product.id %}?quantity=" + quantityInput.value;
+  }
+</script>
+
+{% endblock %}

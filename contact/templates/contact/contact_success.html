@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Message Sent{% endblock %}
+
+{% block content %}
+<main class="min-h-screen flex items-center justify-center bg-[#E8ECD7]">
+  <div class="bg-white shadow-2xl rounded-3xl p-10 text-center max-w-md">
+    <h1 class="text-3xl font-bold text-[#1F4529] mb-4">Thank You, {{ name }}!</h1>
+    <p class="text-[#416457] text-lg">Your message has been sent successfully. We will get back to you soon.</p>
+    <a href="{% url 'home' %}" class="mt-6 inline-block bg-[#1F4529] text-white py-3 px-6 rounded-full hover:bg-[#ffc911] hover:text-black transition">
+      Back to Home
+    </a>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Orders - Seller{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-lg mt-10">
+  <h2 class="text-2xl font-bold text-[#1f4529] mb-6">Orders Received</h2>
+  {% if orders %}
+  <table class="w-full border-collapse">
+    <thead>
+      <tr class="bg-[#416457] text-white">
+        <th class="p-2">Order ID</th>
+        <th class="p-2">Product</th>
+        <th class="p-2">Customer</th>
+        <th class="p-2">Qty</th>
+        <th class="p-2">Status</th>
+        <th class="p-2">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in orders %}
+      <tr class="border-b">
+        <td class="p-2">{{ item.order.id }}</td>
+        <td class="p-2">{{ item.product.name }}</td>
+        <td class="p-2">{{ item.order.user.username }}</td>
+        <td class="p-2">{{ item.quantity }}</td>
+        <td class="p-2">{{ item.order.status }}</td>
+        <td class="p-2">{{ item.order.created_at|date:"d M Y" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>No orders yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
