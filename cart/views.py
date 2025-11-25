@@ -94,19 +94,26 @@ def place_order(request):
 
         # 🔹 Online Payment (Razorpay)
         if payment_method == "Online":
+
+            # DEBUG : check key values
+            print("\n -------------------------")
+            print("RAZORPAY KEY ID =", settings.RAZORPAY_KEY_ID)
+            print("RAZORPAY KEY SECRET =", settings.RAZORPAY_KEY_SECRET)
+            print("-------------------------\n")
+
             razorpay_order = razorpay_client.order.create({
-                "amount": int(total * 100),  # in paisa
+                "amount": int(total * 100),  # amount in paisa
                 "currency": "INR",
-                "payment_capture": "1"
+                "payment_capture": 1,  # MUST BE INTEGER
             })
 
-            order.razorpay_order_id = razorpay_order['id']
+            order.razorpay_order_id = razorpay_order["id"]
             order.save()
 
             context = {
                 "order": order,
                 "razorpay_key": settings.RAZORPAY_KEY_ID,
-                "razorpay_order_id": razorpay_order['id'],
+                "razorpay_order_id": razorpay_order["id"],
                 "razorpay_amount": int(total * 100),
                 "total": total,
             }
@@ -119,30 +126,6 @@ def place_order(request):
 
     return redirect('cart')
 
-@csrf_exempt
-def razorpay_success(request):
-    if request.method == "POST":
-        try:
-            razorpay_order_id = request.POST.get('razorpay_order_id')
-            razorpay_payment_id = request.POST.get('razorpay_payment_id')
-            razorpay_signature = request.POST.get('razorpay_signature')
-
-            order = Order.objects.filter(razorpay_order_id=razorpay_order_id).first()
-            if order:
-                order.status = "Paid"
-                order.save()
-
-                cart = request.session.get('cart', {})
-                _send_order_confirmation_email(order, cart)  # 🟢 add this
-                request.session['cart'] = {}  # clear cart
-
-            messages.success(request, "Payment verified successfully!")
-            return redirect('payment_success')
-        except Exception as e:
-            traceback.print_exc()
-            messages.error(request, "Payment verification failed.")
-            return redirect('cart')
-    return redirect('cart')
 
 
 
