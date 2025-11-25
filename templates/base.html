@@ -5,250 +5,223 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Vetri Garden{% endblock %}</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-  body {
-    font-family: 'Inter', sans-serif;
-  }
-  h1, h2, h3 {
-    font-family: 'Montserrat', sans-serif;
-  }
+    body { font-family: 'Inter', sans-serif; }
+    h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
 
-  /* 🌿 Elegant Modern Nav Hover */
-  .nav-link {
-    position: relative;
-    display: inline-block;
-    color: white;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-  }
-
-  /* Fancy underline animation */
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -6px;
-    width: 0%;
-    height: 2px;
-    background: linear-gradient(90deg, #ffc911, #ffdd57, #ffeea3);
-    box-shadow: 0 0 8px #ffc91180;
-    border-radius: 4px;
-    transform: translateX(-50%);
-    transition: all 0.4s ease;
-  }
-
-  /* Hover glow + underline */
-  .nav-link:hover {
-    color: #ffc911;
-    text-shadow: 0 0 10px rgba(255, 201, 17, 0.7);
-    transform: translateY(-1px);
-  }
-
-  .nav-link:hover::after {
-    width: 80%;
-  }
-
-  /* Active page highlight */
-  .nav-link-active {
-    color: #ffc911;
-  }
-  .nav-link-active::after {
-    width: 80%;
-  }
-
-  /* Smooth navbar appearance */
-  header {
-    transition: background 0.4s ease, box-shadow 0.4s ease;
-  }
-
-  /* Scroll glow effect */
-  header.scrolled {
-    background-color: rgba(31, 69, 41, 0.95);
-    box-shadow: 0 4px 20px rgba(255, 201, 17, 0.2);
-    backdrop-filter: blur(10px);
-  }
-</style>
+    /* Nav Hover */
+    .nav-link {
+      position: relative;
+      display: inline-block;
+      color: white;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #ffc911, #ffdd57, #ffeea3);
+      box-shadow: 0 0 8px #ffc91180;
+      border-radius: 4px;
+      transform: translateX(-50%);
+      transition: all 0.4s ease;
+    }
+    .nav-link:hover { color: #ffc911; text-shadow: 0 0 10px rgba(255,201,17,0.7); }
+    .nav-link:hover::after { width: 80%; }
+    header.scrolled {
+      background-color: rgba(31,69,41,0.95);
+      box-shadow: 0 4px 20px rgba(255,201,17,0.2);
+      backdrop-filter: blur(10px);
+    }
+  </style>
 </head>
 
 <body class="bg-[#1f4529] text-white flex flex-col min-h-screen">
 
-  <!-- ========== HEADER / NAVBAR ========== -->
-  <header class="fixed top-0 left-0 w-full z-50 bg-[#1f4529]/90 backdrop-blur-md shadow-lg border-b border-[#ffc911]/30">
-    <div class="flex justify-between items-center px-6 md:px-12 py-4 transition-all duration-300">
+<!-- ========== NAVBAR ========== -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#1f4529]/90 backdrop-blur-md shadow-lg border-b border-[#ffc911]/30">
+  <div class="flex justify-between items-center px-4 sm:px-6 md:px-12 py-4 transition-all duration-300">
 
-      <!-- 🌿 Logo -->
-      <div class="flex items-center gap-2">
-        <img src="{% static 'images/plant22.png' %}" alt="Vetri Garden Logo" class="h-10 hover:scale-110 transition-transform duration-300">
-        <span class="font-bold text-xl tracking-wide hover:text-[#ffc911] transition">Vetri Garden</span>
-      </div>
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <img src="{% static 'images/plant22.png' %}" class="h-9 sm:h-10">
+      <span class="font-bold text-lg sm:text-xl">Vetri Garden</span>
+    </div>
 
-      <!-- 🌱 Navigation Links -->
-      <nav>
-        <ul class="flex gap-8 text-base font-semibold">
-          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-          <li><a href="{% url 'plants' %}" class="nav-link">Plants</a></li>
-          <li><a href="{% url 'plant_care' %}" class="nav-link">Plant Care</a></li>
-          <li><a href="{% url 'about' %}" class="nav-link">About Us</a></li>
-          <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
-        </ul>
-      </nav>
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:block">
+      <ul class="flex gap-8 text-base font-semibold">
+        <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li><a href="{% url 'plants' %}" class="nav-link">Plants</a></li>
+        <li><a href="{% url 'plant_care' %}" class="nav-link">Plant Care</a></li>
+        <li><a href="{% url 'about' %}" class="nav-link">About Us</a></li>
+        <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
 
-      <!-- 🌸 Right Icons + Auth Buttons -->
-      <div class="flex items-center gap-4 text-white text-lg">
+    <!-- Icons + Buttons -->
+    <div class="flex items-center gap-3 sm:gap-4 text-lg">
 
-        <!-- Search Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="h-6 w-6 cursor-pointer hover:text-[#ffc911] transition-transform duration-300 hover:scale-110"
-             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+      <!-- Search -->
+      <svg class="h-6 w-6 cursor-pointer hover:text-[#ffc911]" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/>
+      </svg>
+
+      <!-- Cart -->
+      <a href="{% url 'cart' %}">
+        <svg class="h-6 w-6 cursor-pointer hover:text-[#ffc911]" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 3h2l.4 2M7 13h10l4-8H5.4L7 13zm0 0L5.4 21H19l-2-8"/>
         </svg>
+      </a>
 
-        <!-- Cart Icon -->
-        <a href="{% url 'cart' %}">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               class="h-6 w-6 cursor-pointer hover:text-[#ffc911] transition-transform duration-300 hover:scale-110"
-               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.6 8H19M7 13l-4-8" />
-          </svg>
+      <!-- Auth Buttons (Hidden on small screens) -->
+      <div class="hidden sm:flex items-center gap-3">
+
+      {% if user.is_authenticated %}
+        <span class="text-sm">Hi, {{ user.username }}</span>
+
+        {% if user.is_seller %}
+          <a href="{% url 'seller:dashboard' %}" class="px-3 py-1 border border-[#ffc911] text-[#ffc911] rounded-full text-sm hover:bg-[#ffc911] hover:text-[#1f4529]">
+            Seller Dashboard
+          </a>
+        {% else %}
+          <a href="{% url 'accounts:profile' %}" class="px-3 py-1 border border-[#ffc911] text-[#ffc911] rounded-full text-sm hover:bg-[#ffc911] hover:text-[#1f4529]">
+            Profile
+          </a>
+        {% endif %}
+
+        <form action="{% url 'accounts:logout' %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="px-3 py-1 border rounded-full text-sm hover:bg-white hover:text-[#1f4529]">
+            Logout
+          </button>
+        </form>
+
+      {% else %}
+        <a href="{% url 'accounts:login' %}" class="px-3 py-1 border rounded-full text-sm hover:bg-white hover:text-[#1f4529]">Sign In</a>
+        <a href="{% url 'accounts:register' %}" class="px-3 py-1 border border-[#ffc911] text-[#ffc911] rounded-full text-sm hover:bg-[#ffc911] hover:text-[#1f4529]">
+          Sign Up
         </a>
-
-<!-- Auth Buttons -->
-{% if user.is_authenticated %}
-  <span class="text-sm font-medium">Hi, {{ user.username }}</span>
-
-  {% if user.is_seller %}
-    <!-- Seller Dashboard Link -->
-    <a href="{% url 'seller:dashboard' %}"
-       class="px-4 py-1 border border-[#ffc911] text-[#ffc911] rounded-full hover:bg-[#ffc911] hover:text-[#1f4529] hover:shadow-lg hover:shadow-[#ffc911]/30 transition text-sm font-semibold">
-       Seller Dashboard
-    </a>
-  {% else %}
-    <!-- Customer Profile Link -->
-    <a href="{% url 'accounts:profile' %}"
-       class="px-4 py-1 border border-[#ffc911] text-[#ffc911] rounded-full hover:bg-[#ffc911] hover:text-[#1f4529] hover:shadow-lg hover:shadow-[#ffc911]/30 transition text-sm font-semibold">
-       Profile
-    </a>
-  {% endif %}
-
-  <form action="{% url 'accounts:logout' %}" method="POST" class="inline">
-    {% csrf_token %}
-    <button type="submit"
-      class="px-4 py-1 border border-white rounded-full hover:bg-white hover:text-[#1f4529] hover:shadow-lg hover:shadow-white/30 transition text-sm font-semibold">
-      Logout
-    </button>
-  </form>
-
-{% else %}
-  <a href="{% url 'accounts:login' %}"
-     class="px-4 py-1 border border-white rounded-full hover:bg-white hover:text-[#1f4529] hover:shadow-lg hover:shadow-white/30 transition text-sm font-semibold">
-     Sign In
-  </a>
-  <a href="{% url 'accounts:register' %}"
-     class="px-4 py-1 border border-[#ffc911] text-[#ffc911] rounded-full hover:bg-[#ffc911] hover:text-[#1f4529] hover:shadow-lg hover:shadow-[#ffc911]/30 transition text-sm font-semibold">
-     Sign Up
-  </a>
-{% endif %}
-
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN CONTENT BLOCK -->
-  <main class="flex-grow mt-[90px]">
-    {% block content %}
-    {% endblock %}
-  </main>
-
-  <!-- ========== FOOTER ========== -->
-<footer class="bg-[#1f4529] text-white pt-16 pb-8">
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
-    <!-- Col 1: Logo + Follow us -->
-    <div>
-      <div class="flex items-center gap-2">
-        <img src="{% static 'images/plant22.png' %}" alt="logo" class="h-10">
-        <span class="font-bold text-xl">Vetri Garden</span>
+      {% endif %}
       </div>
 
-      <p class="mt-4 text-xl text-white/80">Follow Us</p>
-      <div class="mt-3 flex items-center gap-3">
-        <!-- Facebook -->
-        <a href="#" aria-label="facebook" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-white" viewBox="0 0 24 24">
-            <path d="M22 12.07C22 6.48 17.52 2 11.93 2S2 6.48 2 12.07c0 5 3.66 9.13 8.44 9.93v-7.03H7.9v-2.9h2.54V9.41c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.86h2.78l-.44 2.9h-2.34V22c4.78-.8 8.44-4.93 8.44-9.93z"/>
-          </svg>
-        </a>
-        <!-- Instagram -->
-        <a href="#" aria-label="instagram" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-white" viewBox="0 0 24 24">
-            <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3.2A4.8 4.8 0 1016.8 12 4.81 4.81 0 0012 7.2zm0 2A2.8 2.8 0 1114.8 12 2.8 2.8 0 0112 9.2zM17.3 6.7a1 1 0 11-1.4 1.4 1 1 0 011.4-1.4z"/>
-          </svg>
-        </a>
-        <!-- Twitter / X -->
-        <a href="#" aria-label="twitter" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-white" viewBox="0 0 24 24">
-            <path d="M18.244 2h3.349l-7.31 8.366L22 22h-6.531l-5.11-6.67L4.35 22H1l7.833-8.961L2 2h6.644l4.617 6.105L18.244 2zm-1.173 18h1.854L7.01 3.226H5.048L17.07 20z"/>
-          </svg>
-        </a>
-        <!-- YouTube -->
-        <a href="#" aria-label="youtube" class="p-2 rounded-full bg-white/10 hover:bg-white/20 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-white" viewBox="0 0 24 24">
-            <path d="M23.5 6.2s-.2-1.7-.9-2.4c-.9-.9-1.9-.9-2.4-1C17.3 2.5 12 2.5 12 2.5h0s-5.3 0-8.2.3c-.5.1-1.5.1-2.4 1-.7.7-.9 2.4-.9 2.4S0 8.2 0 10.2v1.6c0 2 .2 4 0 4s.2 1.7.9 2.4c.9.9 2.1.9 2.6 1 1.9.2 8 .3 8 .3s5.3 0 8.2-.3c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.4.9-2.4s.2-2 .2-4v-1.6c0-2-.2-4-.2-4zM9.6 14.6V7.9l6.4 3.4-6.4 3.3z"/>
-          </svg>
-        </a>
-      </div>
-    </div>
+      <!-- Mobile Menu Button -->
+      <button id="menu-btn" class="md:hidden focus:outline-none">
+        <svg class="h-8 w-8" fill="none" stroke="white" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
 
-    <!-- Col 2: Quick Links -->
-    <div>
-      <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
-      <ul class="space-y-2 text-white/80">
-        <li><a href="#" class="hover:text-[#ffc911] transition">Home</a></li>
-        <li><a href="#about-us" class="hover:text-[#ffc911] transition">About</a></li>
-        <li><a href="#plant-care" class="hover:text-[#ffc911] transition">Plant Care</a></li>
-        <li><a href="#reviews" class="hover:text-[#ffc911] transition">Reviews</a></li>
-      </ul>
-    </div>
-
-    <!-- Col 3: Customer Support -->
-    <div>
-      <h4 class="font-semibold text-lg mb-4">Customer Support</h4>
-      <ul class="space-y-2 text-white/80">
-        <li><a href="#" class="hover:text-[#ffc911] transition">Shipping &amp; Delivery</a></li>
-        <li><a href="#" class="hover:text-[#ffc911] transition">Returns &amp; Replacements</a></li>
-        <li><a href="#contact" class="hover:text-[#ffc911] transition">Payment Options</a></li>
-      </ul>
-    </div>
-
-    <!-- Col 4: Contact -->
-    <div id="contact">
-      <h4 class="font-semibold text-lg mb-4">Contact Us</h4>
-      <p class="text-white/80 text-sm leading-6">
-        Address: Vetri Garden,<br>
-        April Complex Surandai, Tenkasi-627811<br>
-        India
-      </p>
-      <p class="text-white/80 text-sm mt-3">
-        Phone: +91 9876543210<br>
-        Email: www.vetrigarden@gmail.com
-      </p>
     </div>
   </div>
 
-  <!-- Bottom bar -->
-  <div class="mt-12 border-t border-white/10 pt-6 text-center text-white/70 text-sm">
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden bg-[#1f4529]/95 border-t border-[#ffc911]/20">
+    <ul class="flex flex-col py-4 text-center space-y-4 text-base">
+      <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+      <li><a href="{% url 'plants' %}" class="nav-link">Plants</a></li>
+      <li><a href="{% url 'plant_care' %}" class="nav-link">Plant Care</a></li>
+      <li><a href="{% url 'about' %}" class="nav-link">About Us</a></li>
+      <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'accounts:profile' %}" class="text-[#ffc911]">Profile</a></li>
+        <li>
+          <form action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <button class="text-red-300">Logout</button>
+          </form>
+        </li>
+      {% else %}
+        <li><a href="{% url 'accounts:login' %}" class="text-[#ffc911]">Sign In</a></li>
+        <li><a href="{% url 'accounts:register' %}" class="text-[#ffc911]">Sign Up</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="flex-grow mt-[90px]">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-[#1f4529] text-white pt-14 pb-8">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+
+    <!-- Col 1 -->
+    <div>
+      <div class="flex items-center gap-2">
+        <img src="{% static 'images/plant22.png' %}" class="h-10">
+        <span class="font-bold text-xl">Vetri Garden</span>
+      </div>
+      <p class="mt-4 text-white/80">Follow Us</p>
+
+      <div class="mt-3 flex gap-3">
+        <div class="p-2 bg-white/10 rounded-full">F</div>
+        <div class="p-2 bg-white/10 rounded-full">I</div>
+        <div class="p-2 bg-white/10 rounded-full">X</div>
+        <div class="p-2 bg-white/10 rounded-full">Y</div>
+      </div>
+    </div>
+
+    <!-- Col 2 -->
+    <div>
+      <h4 class="font-semibold text-lg mb-3">Quick Links</h4>
+      <ul class="space-y-2 text-white/80">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="#about-us">About</a></li>
+        <li><a href="#plant-care">Plant Care</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+    </div>
+
+    <!-- Col 3 -->
+    <div>
+      <h4 class="font-semibold text-lg mb-3">Customer Support</h4>
+      <ul class="space-y-2 text-white/80">
+        <li>Shipping & Delivery</li>
+        <li>Returns</li>
+        <li>Payment Options</li>
+      </ul>
+    </div>
+
+    <!-- Col 4 -->
+    <div>
+      <h4 class="font-semibold text-lg mb-3">Contact</h4>
+      <p class="text-white/80 text-sm leading-6">
+        Vetri Garden,<br> April Complex Surandai,<br> Tenkasi - 627811, India
+      </p>
+      <p class="mt-3 text-white/80 text-sm">
+        +91 9876543210<br>
+        www.vetrigarden@gmail.com
+      </p>
+    </div>
+
+  </div>
+
+  <div class="mt-8 text-center text-white/70 text-sm border-t border-white/10 pt-4">
     © <span id="year"></span> Vetri Garden. All rights reserved.
   </div>
 </footer>
 
 
-  {% block extra_scripts %}{% endblock %}
-  <script>
-    document.getElementById("year").innerText = new Date().getFullYear();
-  </script>
+<script>
+  document.getElementById("year").innerText = new Date().getFullYear();
+
+  // Mobile Menu Toggle
+  document.getElementById("menu-btn").onclick = () => {
+    document.getElementById("mobile-menu").classList.toggle("hidden");
+  };
+</script>
+
 </body>
 </html>

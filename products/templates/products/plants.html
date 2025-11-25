@@ -5,12 +5,8 @@
 
 {% block content %}
 <style>
-  html {
-    scroll-behavior: smooth;
-  }
-  section[id] {
-    scroll-margin-top: 160px; /* adjust if needed */
-  }
+  html { scroll-behavior: smooth; }
+  section[id] { scroll-margin-top: 160px; }
 </style>
 
 <!-- Spacer for fixed header -->
@@ -18,118 +14,155 @@
 
 <main class="bg-white min-h-screen py-1">
 
-<!-- ===== Sub Navigation with Icons ===== -->
+  <!-- ===== Sub Navigation with Icons ===== -->
   <div class="sticky top-[90px] z-30 bg-white/90 backdrop-blur-md py-4 mt-10 shadow-md">
-    <div class="max-w-7xl mx-auto flex justify-center flex-wrap gap-6 text-[#1f4529] font-semibold text-lg">
-      <a href="#indoor" class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">
-        🪴 Indoor   |
-      </a>
-      <a href="#outdoor" class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">
-        🌿 Outdoor  |
-      </a>
-      <a href="#flowering" class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">
-        🌸 Flowering  |
-      </a>  
-      <a href="#fruit" class="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">
-        🍎 Fruit   
-      </a>
+    <div class="max-w-7xl mx-auto flex justify-center flex-wrap gap-4 sm:gap-6 text-[#1f4529] font-semibold text-base sm:text-lg">
+      <a href="#indoor" class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">🪴 Indoor |</a>
+      <a href="#outdoor" class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">🌿 Outdoor |</a>
+      <a href="#flowering" class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">🌸 Flowering |</a>
+      <a href="#fruit" class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">🍎 Fruit</a>
     </div>
   </div>
 
-  <!-- ===== Indoor Plants Section ===== -->
-  <section id="indoor" class="mt-20 px-10">
-    <h3 class="text-3xl font-bold text-[#1f4529] mb-10">Indoor Plants</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+  <!-- ===== Indoor Plants ===== -->
+  <section id="indoor" class="mt-20 px-4 sm:px-10">
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Indoor Plants</h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
+
       {% for product in indoor_plants %}
-      <article class="bg-[#416457] text-white rounded-[140px] p-8 w-80 flex flex-col items-center shadow-xl hover:-translate-y-1 transition-all duration-300">
+      <article class="bg-[#416457] text-white rounded-3xl sm:rounded-[140px] 
+        p-6 sm:p-8 w-full max-w-xs mx-auto flex flex-col items-center shadow-xl 
+        hover:-translate-y-1 transition-all duration-300">
+
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
+          <img src="{{ product.image.url }}" class="h-40 sm:h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
         {% else %}
-          <img src="{% static 'images/placeholder.png' %}" class="h-48 w-auto object-contain mb-4 opacity-70" alt="No image available">
+          <img src="{% static 'images/placeholder.png' %}" class="h-40 sm:h-48 w-auto object-contain mb-4 opacity-70">
         {% endif %}
-        <h3 class="text-xl font-semibold text-center">{{ product.name }}</h3>
-        <p class="text-white/70">{{ product.get_category_display }}</p>
+
+        <h3 class="text-lg sm:text-xl font-semibold text-center">{{ product.name }}</h3>
+        <p class="text-white/70 text-sm sm:text-base">{{ product.get_category_display }}</p>
         <p class="mt-2 text-lg font-bold">₹{{ product.price }}</p>
-        <a href="{% url 'product_detail' product.pk %}" class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full hover:bg-[#ffc911] hover:text-black transition">
+
+        <a href="{% url 'product_detail' product.pk %}"
+           class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full 
+           hover:bg-[#ffc911] hover:text-black transition">
           View Details
         </a>
+
       </article>
       {% empty %}
-      <p class="text-center text-gray-600 col-span-full">No indoor plants available yet.</p>
+        <p class="text-center text-gray-600 col-span-full">No indoor plants available yet.</p>
       {% endfor %}
+
     </div>
   </section>
 
-  <!-- ===== Outdoor Plants Section ===== -->
-  <section id="outdoor" class="mt-20 px-10">
-    <h3 class="text-3xl font-bold text-[#1f4529] mb-10">Outdoor Plants</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+  <!-- ===== Outdoor Plants ===== -->
+  <section id="outdoor" class="mt-20 px-4 sm:px-10">
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Outdoor Plants</h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
+
       {% for product in outdoor_plants %}
-      <article class="bg-[#416457] text-white rounded-[140px] p-8 w-80 flex flex-col items-center shadow-xl hover:-translate-y-1 transition-all duration-300">
+      <article class="bg-[#416457] text-white rounded-3xl sm:rounded-[140px] 
+        p-6 sm:p-8 w-full max-w-xs mx-auto flex flex-col items-center shadow-xl 
+        hover:-translate-y-1 transition-all duration-300">
+
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
+          <img src="{{ product.image.url }}" class="h-40 sm:h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
         {% else %}
-          <img src="{% static 'images/placeholder.png' %}" class="h-48 w-auto object-contain mb-4 opacity-70" alt="No image available">
+          <img src="{% static 'images/placeholder.png' %}" class="h-40 sm:h-48 w-auto object-contain mb-4 opacity-70">
         {% endif %}
-        <h3 class="text-xl font-semibold text-center">{{ praoduct.name }}</h3>
-        <p class="text-white/70">{{ product.get_category_display }}</p>
+
+        <h3 class="text-lg sm:text-xl font-semibold text-center">{{ product.name }}</h3>
+        <p class="text-white/70 text-sm sm:text-base">{{ product.get_category_display }}</p>
         <p class="mt-2 text-lg font-bold">₹{{ product.price }}</p>
-        <a href="{% url 'product_detail' product.pk %}" class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full hover:bg-[#ffc911] hover:text-black transition">
+
+        <a href="{% url 'product_detail' product.pk %}"
+           class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full 
+           hover:bg-[#ffc911] hover:text-black transition">
           View Details
         </a>
+
       </article>
       {% empty %}
-      <p class="text-center text-gray-600 col-span-full">No outdoor plants available yet.</p>
+        <p class="text-center text-gray-600 col-span-full">No outdoor plants available yet.</p>
       {% endfor %}
+
     </div>
   </section>
 
-  <!-- ===== Flowering Plants Section ===== -->
-  <section id="flowering" class="mt-20 px-10">
-    <h3 class="text-3xl font-bold text-[#1f4529] mb-10">Flowering Plants</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+  <!-- ===== Flowering Plants ===== -->
+  <section id="flowering" class="mt-20 px-4 sm:px-10">
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Flowering Plants</h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
+
       {% for product in flowering_plants %}
-      <article class="bg-[#416457] text-white rounded-[140px] p-8 w-80 flex flex-col items-center shadow-xl hover:-translate-y-1 transition-all duration-300">
+      <article class="bg-[#416457] text-white rounded-3xl sm:rounded-[140px] 
+        p-6 sm:p-8 w-full max-w-xs mx-auto flex flex-col items-center shadow-xl 
+        hover:-translate-y-1 transition-all duration-300">
+
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
+          <img src="{{ product.image.url }}" class="h-40 sm:h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
         {% else %}
-          <img src="{% static 'images/placeholder.png' %}" class="h-48 w-auto object-contain mb-4 opacity-70" alt="No image available">
+          <img src="{% static 'images/placeholder.png' %}" class="h-40 sm:h-48 w-auto object-contain mb-4 opacity-70">
         {% endif %}
-        <h3 class="text-xl font-semibold text-center">{{ product.name }}</h3>
-        <p class="text-white/70">{{ product.get_category_display }}</p>
+
+        <h3 class="text-lg sm:text-xl font-semibold text-center">{{ product.name }}</h3>
+        <p class="text-white/70 text-sm sm:text-base">{{ product.get_category_display }}</p>
         <p class="mt-2 text-lg font-bold">₹{{ product.price }}</p>
-        <a href="{% url 'product_detail' product.pk %}" class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full hover:bg-[#ffc911] hover:text-black transition">
+
+        <a href="{% url 'product_detail' product.pk %}"
+           class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full 
+           hover:bg-[#ffc911] hover:text-black transition">
           View Details
         </a>
+
       </article>
       {% empty %}
-      <p class="text-center text-gray-600 col-span-full">No flowering plants available yet.</p>
+        <p class="text-center text-gray-600 col-span-full">No flowering plants available yet.</p>
       {% endfor %}
+
     </div>
   </section>
 
-  <!-- ===== Fruit Plants Section ===== -->
-  <section id="fruit" class="mt-20 px-10 pb-16">
-    <h3 class="text-3xl font-bold text-[#1f4529] mb-10">Fruit Plants</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+  <!-- ===== Fruit Plants ===== -->
+  <section id="fruit" class="mt-20 px-4 sm:px-10 pb-16">
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Fruit Plants</h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
+
       {% for product in fruit_plants %}
-      <article class="bg-[#416457] text-white rounded-[140px] p-8 w-80 flex flex-col items-center shadow-xl hover:-translate-y-1 transition-all duration-300">
+      <article class="bg-[#416457] text-white rounded-3xl sm:rounded-[140px] 
+        p-6 sm:p-8 w-full max-w-xs mx-auto flex flex-col items-center shadow-xl 
+        hover:-translate-y-1 transition-all duration-300">
+
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
+          <img src="{{ product.image.url }}" class="h-40 sm:h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
         {% else %}
-          <img src="{% static 'images/placeholder.png' %}" class="h-48 w-auto object-contain mb-4 opacity-70" alt="No image available">
+          <img src="{% static 'images/placeholder.png' %}" class="h-40 sm:h-48 w-auto object-contain mb-4 opacity-70">
         {% endif %}
-        <h3 class="text-xl font-semibold text-center">{{ product.name }}</h3>
-        <p class="text-white/70">{{ product.get_category_display }}</p>
+
+        <h3 class="text-lg sm:text-xl font-semibold text-center">{{ product.name }}</h3>
+        <p class="text-white/70 text-sm sm:text-base">{{ product.get_category_display }}</p>
         <p class="mt-2 text-lg font-bold">₹{{ product.price }}</p>
-        <a href="{% url 'product_detail' product.pk %}" class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full hover:bg-[#ffc911] hover:text-black transition">
+
+        <a href="{% url 'product_detail' product.pk %}"
+           class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full 
+           hover:bg-[#ffc911] hover:text-black transition">
           View Details
         </a>
+
       </article>
       {% empty %}
-      <p class="text-center text-gray-600 col-span-full">No fruit plants available yet.</p>
+        <p class="text-center text-gray-600 col-span-full">No fruit plants available yet.</p>
       {% endfor %}
+
     </div>
   </section>
+
 </main>
 {% endblock %}

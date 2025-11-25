@@ -4,10 +4,12 @@
 {% block title %}Home - Vetri Garden{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+
+<!-- ================= HERO SECTION ================= -->
 <section class="flex flex-col md:flex-row justify-between items-center px-8 md:px-16 py-20 md:py-28 gap-12 relative bg-[#1f4529] min-h-[50vh]">
-  <!-- Left Text Content -->
-  <div class="max-w-xl text-white">
+
+  <!-- LEFT TEXT -->
+  <div class="max-w-xl text-white text-center md:text-left">
     <p class="text-2xl md:text-3xl leading-relaxed">
       <span class="text-[#ffc911] font-xxl">Welcome to</span> Vetri Garden your green companion for a happier, healthier space.
     </p>
@@ -17,196 +19,134 @@
     </p>
   </div>
 
-    <!-- Right Side Glass Slider -->
-    <div class="relative max-w-sm mx-auto">
-    <!-- Discount Badge -->
-      <div class="absolute -top-1 -left-1 w-20 h-20   bg-white/10 flex items-center justify-center 
-                font-bold text-base rounded-full 
-                shadow-[0_0_20px_rgba(255,255,255,0.25)] border border-white/30 backdrop-blur-md  z-20 
-                transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(255,255,255,0.9)]">
+  <!-- RIGHT — GLASS SLIDER -->
+  <div class="relative max-w-sm mx-auto md:mx-0">
+
+    <!-- DISCOUNT BADGE -->
+    <div class="absolute -top-3 -left-3 w-20 h-20 bg-white/10 flex items-center justify-center 
+                font-bold text-base rounded-full border border-white/30 backdrop-blur-md 
+                shadow-[0_0_20px_rgba(255,255,255,0.3)] z-20">
       30%
     </div>
 
-    <!-- Plant Card -->
-    <div class="relative rounded-full shadow-2xl bg-white/10 border border-white/20 backdrop-blur-md 
-                transition-transform duration-300 hover:scale-105 
-                hover:shadow-[0_0_25px_rgba(255,255,255,0.9)] p-4 overflow-hidden">
-      
+    <!-- SLIDER MAIN -->
+    <div class="relative overflow-hidden rounded-3xl shadow-2xl bg-white/10 border border-white/20 backdrop-blur-md">
       <div class="flex transition-transform duration-500" id="slider">
-        <!-- Slide 1 -->
+
+        <!-- SLIDE 1 -->
         <div class="relative text-center px-6 py-10 flex-none w-full">
-          <img src="{% static 'images/plant1.png' %}" 
-              alt="Green Money Plant" 
-              class="mx-auto w-72 h-60 object-contain drop-shadow-lg">
+          <img src="{% static 'images/plant1.png' %}" class="mx-auto w-72 h-60 object-contain drop-shadow-lg">
           <h3 class="mt-6 text-2xl font-bold text-white">Green Money Plant</h3>
           <p class="text-lg text-[#e8ecd7] mt-1">Indoor Plant</p>
-          <button class="mt-5 px-8 py-3 bg-white/20 text-white border border-white/40 rounded-full font-semibold 
-                        hover:bg-[#ffc911] hover:text-black transition">
-            Buy Now
-          </button>
+          <button class="mt-5 px-8 py-3 bg-white/20 text-white border border-white/40 rounded-full hover:bg-[#ffc911] hover:text-black transition">Buy Now</button>
         </div>
 
-          <!-- Slide 2 -->
-          <div class="relative text-center px-6 py-10 flex-none w-full">
-          <img src="{% static 'images/plant2.png' %}" alt="Aloe Vera" class="mx-auto w-72 h-60 object-contain drop-shadow-lg">
-            <h3 class="mt-6 text-2xl font-bold text-white">Aloe Vera</h3>
-            <p class="text-lg text-[#e8ecd7] mt-1">Medicinal Plant</p>
-            <button class="mt-5 px-8 py-3 bg-white/20 text-white border border-white/40 rounded-full font-semibold hover:bg-[#ffc911] hover:text-black transition">
-              Buy Now
-            </button>
-          </div>
-
-          <!-- Slide 3 -->
-          <div class="relative text-center px-6 py-10 flex-none w-full">
-            <img src="{% static 'images/plant3.png' %}" alt="Snake Plant" class="mx-auto w-72 h-60 object-contain drop-shadow-lg">
-            <h3 class="mt-6 text-2xl font-bold text-white">Snake Plant</h3>
-            <p class="text-lg text-[#e8ecd7] mt-1">Air Purifier</p>
-            <button class="mt-5 px-8 py-3 bg-white/20 text-white border border-white/40 rounded-full font-semibold hover:bg-[#ffc911] hover:text-black transition">
-              Buy Now
-            </button>
-          </div>
+        <!-- SLIDE 2 -->
+        <div class="relative text-center px-6 py-10 flex-none w-full">
+          <img src="{% static 'images/plant2.png' %}" class="mx-auto w-72 h-60 object-contain drop-shadow-lg">
+          <h3 class="mt-6 text-2xl font-bold text-white">Aloe Vera</h3>
+          <p class="text-lg text-[#e8ecd7] mt-1">Medicinal Plant</p>
+          <button class="mt-5 px-8 py-3 bg-white/20 text-white border border-white/40 rounded-full hover:bg-[#ffc911] hover:text-black transition">Buy Now</button>
         </div>
-      </div>
 
-      <!-- Slider Controls -->
-      <button onclick="prevSlide()" class="absolute top-1/2 -left-10 transform -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-full text-white hover:bg-[#ffc911] hover:text-black transition">&#10094;</button>
-      <button onclick="nextSlide()" class="absolute top-1/2 -right-10 transform -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-full text-white hover:bg-[#ffc911] hover:text-black transition">&#10095;</button>
+        <!-- SLIDE 3 -->
+        <div class="relative text-center px-6 py-10 flex-none w-full">
+          <img src="{% static 'images/plant3.png' %}" class="mx-auto w-72 h-60 object-contain drop-shadow-lg">
+          <h3 class="mt-6 text-2xl font-bold text-white">Snake Plant</h3>
+          <p class="text-lg text-[#e8ecd7] mt-1">Air Purifier</p>
+          <button class="mt-5 px-8 py-3 bg-white/20 text-white border border-white/40 rounded-full hover:bg-[#ffc911] hover:text-black transition">Buy Now</button>
+        </div>
 
-      <!-- Dots -->
-      <div class="flex justify-center gap-2 mt-4">
-        <span class="dot w-3 h-3 bg-white cursor-pointer rounded-full" onclick="goToSlide(0)"></span>
-        <span class="dot w-3 h-3 bg-white/70 cursor-pointer rounded-full" onclick="goToSlide(1)"></span>
-        <span class="dot w-3 h-3 bg-white/70 cursor-pointer rounded-full" onclick="goToSlide(2)"></span>
       </div>
     </div>
-</section>
 
+    <!-- CONTROLS -->
+    <button onclick="prevSlide()" class="absolute top-1/2 -left-10 md:flex hidden bg-white/20 backdrop-blur-md p-3 rounded-full text-white hover:bg-[#ffc911] hover:text-black transition">❮</button>
+    <button onclick="nextSlide()" class="absolute top-1/2 -right-10 md:flex hidden bg-white/20 backdrop-blur-md p-3 rounded-full text-white hover:bg-[#ffc911] hover:text-black transition">❯</button>
 
-<!-- 🌱 PLANT CATEGORIES -->
-<section class="bg-white text-center min-h-screen flex flex-col justify-center py-20">
-  <!-- Heading -->
-  <h2 class="text-3xl md:text-4xl font-bold text-[#1f4529]">
-    Find The Perfect <span class="text-[#e3de61]">Plant</span><br>
-    For <span class="text-[#e3de61]">Your</span> Space
-  </h2>
-
-  <!-- Plant Category Cards -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-16 px-10 mt-20">
-    <!-- Card 1 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] w-72 h-72 flex justify-center items-center rounded-tl-[50%] rounded-br-[50%] shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant2.png' %}" alt="Indoor Plants" class="h-56 object-contain drop-shadow-lg">
-      </div>
-      <p class="mt-6 text-lg font-semibold text-black">Indoor Plants</p>
+    <!-- DOTS -->
+    <div class="flex justify-center gap-2 mt-4">
+      <span class="dot w-3 h-3 bg-white rounded-full cursor-pointer" onclick="goToSlide(0)"></span>
+      <span class="dot w-3 h-3 bg-white/70 rounded-full cursor-pointer" onclick="goToSlide(1)"></span>
+      <span class="dot w-3 h-3 bg-white/70 rounded-full cursor-pointer" onclick="goToSlide(2)"></span>
     </div>
 
-    <!-- Card 2 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] w-72 h-72 flex justify-center items-center rounded-tl-[50%] rounded-br-[50%] shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant3.png' %}" alt="Outdoor Plants" class="h-56 object-contain drop-shadow-lg">
-      </div>
-      <p class="mt-6 text-lg font-semibold text-black">Outdoor Plants</p>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] w-72 h-72 flex justify-center items-center rounded-tl-[50%] rounded-br-[50%] shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant4.png' %}" alt="Flowering Plants" class="h-56 object-contain drop-shadow-lg">
-      </div>
-      <p class="mt-6 text-lg font-semibold text-black">Flowering Plants</p>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] w-72 h-72 flex justify-center items-center rounded-tl-[50%] rounded-br-[50%] shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant5.png' %}" alt="Fruit Plants" class="h-56 object-contain drop-shadow-lg">
-      </div>
-      <p class="mt-6 text-lg font-semibold text-black">Fruit Plants</p>
-    </div>
   </div>
 </section>
 
 
 
-<section class="bg-[#1f4529] py-16 text-center">
-  <!-- Heading -->
-  <h2 class="text-3xl md:text-4xl font-bold text-[#f6e27f] mb-12">
-    Our Best Selling
+<!-- ================= CATEGORIES ================= -->
+<section class="bg-white text-center py-20">
+  <h2 class="text-3xl md:text-4xl font-bold text-[#1f4529]">
+    Find The Perfect <span class="text-[#e3de61]">Plant</span> For <span class="text-[#e3de61]">Your</span> Space
   </h2>
 
-  <!-- Card Container -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-10 px-5 md:px-20 mt-16">
+    {% for img, title in [
+      ('plant2.png', "Indoor Plants"),
+      ('plant3.png', "Outdoor Plants"),
+      ('plant4.png', "Flowering Plants"),
+      ('plant5.png', "Fruit Plants"),
+    ] %}
+    <div class="flex flex-col items-center">
+      <div class="bg-[#1f4529] w-48 h-48 md:w-72 md:h-72 flex justify-center items-center rounded-tl-[50%] rounded-br-[50%] shadow-xl hover:scale-105 transition">
+        <img src="{% static 'images/'|add:img %}" class="h-36 md:h-56 object-contain drop-shadow-lg">
+      </div>
+      <p class="mt-4 md:mt-6 text-base md:text-lg font-semibold text-black">{{title}}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+
+<!-- ================= BEST SELLING ================= -->
+<section class="bg-[#1f4529] py-16 text-center">
+  <h2 class="text-3xl md:text-4xl font-bold text-[#f6e27f] mb-12">Our Best Selling</h2>
+
   <div class="flex flex-col md:flex-row justify-center items-start gap-10 px-6 md:px-20">
 
-    <!-- Card 1 -->
-    <div class="bg-white/15 backdrop-blur-lg border border-white/30 rounded-[140px] p-8 w-80 text-white flex flex-col items-center shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)] transition duration-500">
-      <img src="{% static 'images/plant6.png' %}" alt="Redrose Money Plant" class="h-56 mx-auto mb-10 drop-shadow-lg">
-      <h3 class="text-xl font-semibold">Redrose Money Plant</h3>
-      <p class="text-sm text-gray-200 mt-1">Outdoor Plant</p>
-      <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
-      <button class="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/30 rounded-full text-white font-medium shadow-md hover:bg-[#ffc911] hover:text-black transition duration-300">
-        Buy Now
-      </button>
-    </div>
-
-    <!-- Card 2 (center card slightly raised) -->
-    <div class="bg-white/15 backdrop-blur-lg border border-white/30 rounded-[140px] p-8 w-80 text-white flex flex-col items-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] mt-10 md:mt-16 hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)] transition duration-500">
-      <img src="{% static 'images/plant7a.png' %}" alt="Green Money Plant" class="h-56 mx-auto mb-10 drop-shadow-lg">
-      <h3 class="text-xl font-semibold">Green Money Plant</h3>
+    {% for img, title in [
+      ('plant6.png',"Redrose Money Plant"),
+      ('plant7a.png',"Green Money Plant"),
+      ('plant7.png',"Golden Money Plant"),
+    ] %}
+    <div class="bg-white/15 backdrop-blur-lg border border-white/30 rounded-[140px] p-8 w-72 md:w-80 text-white flex flex-col items-center shadow-lg hover:scale-105 transition">
+      <img src="{% static 'images/'|add:img %}" class="h-48 md:h-56 drop-shadow-lg mb-8">
+      <h3 class="text-xl font-semibold">{{title}}</h3>
       <p class="text-sm text-gray-200 mt-1">Indoor Plant</p>
       <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
-      <button class="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/30 rounded-full text-white font-medium shadow-md hover:bg-[#ffc911] hover:text-black transition duration-300">
-        Buy Now
-      </button>
+      <button class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full hover:bg-[#ffc911] hover:text-black transition">Buy Now</button>
     </div>
-
-    <!-- Card 3 -->
-    <div class="bg-white/15 backdrop-blur-lg border border-white/30 rounded-[140px] p-8 w-80 text-white flex flex-col items-center shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)] transition duration-500">
-      <img src="{% static 'images/plant7.png' %}" alt="Golden Money Plant" class="h-56 mx-auto mb-10 drop-shadow-lg">
-      <h3 class="text-xl font-semibold">Golden Money Plant</h3>
-      <p class="text-sm text-gray-200 mt-1">Indoor Plant</p>
-      <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
-      <button class="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/30 rounded-full text-white font-medium shadow-md hover:bg-[#ffc911] hover:text-black transition duration-300">
-        Buy Now
-      </button>
-    </div>
+    {% endfor %}
 
   </div>
 </section>
 
 
-<!-- ========== PLANT CARE ========== -->
+
+<!-- ================= PLANT CARE ================= -->
 <section id="plant-care" class="bg-white py-16">
   <div class="max-w-6xl mx-auto px-6">
-    <!-- Heading -->
-    <h2 class="text-2xl md:text-3xl font-bold text-center">
-      <span class="text-[#1f4529]">Plant</span>
-      <span class="text-[#e3de61]"> Care</span>
+
+    <h2 class="text-3xl font-bold text-center text-[#1f4529]">
+      Plant <span class="text-[#e3de61]">Care</span>
     </h2>
 
-    <!-- Card -->
-    <div class="mt-8 bg-[#1f4529]/95 text-white rounded-tl-[120px] rounded-br-[120px] p-8 p-6 md:p-20 flex flex-col md:flex-row gap-8 md:gap-15 shadow-xl">
-      <!-- Left image -->
+    <div class="mt-10 bg-[#1f4529] text-white rounded-tl-[120px] rounded-br-[120px] p-8 md:p-14 flex flex-col md:flex-row gap-10 shadow-lg">
+
       <div class="md:w-1/3">
-        <img src="{% static 'images/plant8.png' %}" alt="How to Water Your Plants"
-             class="w-full h-full object-cover rounded-[20px]">
+        <img src="{% static 'images/plant8.png' %}" class="w-full h-full object-cover rounded-xl">
       </div>
 
-      <!-- Right content -->
       <div class="md:w-2/3">
-        <h3 class="text-xl md:text-2xl font-semibold text-[#e3de61]">How to Water Your Plants</h3>
-        <p class="mt-3 leading-7 text-[#e8ecd7]">
-          Watering plants may seem simple, but doing it correctly is essential to keeping them healthy
-          and thriving. The first step in proper watering is to check the soil. Stick your finger about
-          one to two inches deep into the soil—if it feels dry, your plant likely needs water.
+        <h3 class="text-2xl font-semibold text-[#e3de61]">How to Water Your Plants</h3>
+        <p class="mt-3 text-[#e8ecd7] leading-7">
+          Watering plants may seem simple, but doing it correctly is essential to keeping them healthy.
         </p>
+        <button class="mt-6 px-5 py-2 rounded-full bg-white/10 border border-white/30 hover:bg-[#ffc911] hover:text-black transition">More Reading</button>
 
-        <!-- Glassmorphism button -->
-        <button
-          class="mt-6 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-white text-sm font-medium shadow-md hover:bg-[#ffc911] hover:text-black transition">
-          More Reading
-        </button>
-
-        <!-- Minimal slider dots -->
         <div class="mt-6 flex items-center gap-2">
           <span class="w-8 h-[3px] bg-[#e3de61] rounded-full"></span>
           <span class="w-4 h-[3px] bg-white/40 rounded-full"></span>
@@ -217,160 +157,134 @@
   </div>
 </section>
 
-<!-- ========== ABOUT US ========== -->
-<section id="about-us" class="bg-white py-16">
+
+
+<!-- ================= ABOUT US ================= -->
+<section class="bg-white py-16">
   <div class="max-w-6xl mx-auto px-6">
-    <!-- Heading -->
-    <h2 class="text-2xl md:text-3xl font-bold text-[#1f4529] mb-10">About Us</h2>
 
-    <!-- Row 1: Text Left + Image Right -->
+    <h2 class="text-3xl font-bold text-[#1f4529] mb-10">About Us</h2>
+
+    <!-- ROW 1 -->
     <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
-      <!-- Left Content -->
-      <div class="md:w-1/2 bg-white  p-6 ">
-        <h3 class="text-lg md:text-xl font-semibold text-[#1f4529]">Who We Are</h3>
-        <p class="mt-3 text-[#1f4529]/80 leading-7">
-          Founded in 2025, Vetri Garden was to make plant care easy, beautiful, and accessible
-          for everyone from first-time plant parents to lifelong gardeners.
-        </p>
-        <button
-          class="mt-5 px-4 py-2 rounded-full bg-[#1f4529]/100 backdrop-blur-md border border-[#1f4529]/30 text-[#ffffff] text-sm font-medium hover:bg-[#ffc911] hover:text-black transition">
-          Know More
-        </button>
-      </div>
-      <!-- Right Image -->
       <div class="md:w-1/2">
-        <img src="{% static 'images/plant9.png' %}" alt="About Vetri Garden"
-             class="w-full rounded-[5px] border-[20px] border-[#1f4529] rounded-tl-[120px] rounded-br-[120px] shadow-md">
+        <h3 class="text-xl font-semibold text-[#1f4529]">Who We Are</h3>
+        <p class="mt-3 text-[#1f4529]/80 leading-7">
+          Founded in 2025, Vetri Garden makes plant care easy and beautiful.
+        </p>
+        <button class="mt-5 px-4 py-2 rounded-full bg-[#1f4529] text-white hover:bg-[#ffc911] hover:text-black transition">Know More</button>
+      </div>
+
+      <div class="md:w-1/2">
+        <img src="{% static 'images/plant9.png' %}" class="w-full rounded-xl border-[20px] border-[#1f4529] rounded-tl-[120px] rounded-br-[120px] shadow-md">
       </div>
     </div>
 
-    <!-- Row 2: Image Left + Text Right -->
+    <!-- ROW 2 -->
     <div class="flex flex-col md:flex-row items-center gap-8">
-      <!-- Left Image -->
-      <div class="md:w-1/2 order-1 md:order-none">
-        <img src="{% static 'images/plant10.png' %}" alt="What We Offer"
-             class="w-full rounded-[5px] border-[20px] border-[#1f4529]  rounded-bl-[120px] rounded-tr-[120px] shadow-md">
-      </div>
-      <!-- Right Content -->
-      <div class="md:w-1/2 bg-white p-6 order-none md:order-1">
-        <h3 class="text-lg md:text-xl font-semibold text-[#1f4529]">What We Offer</h3>
-        <ul class="mt-3 text-[#1f4529]/80 leading-7 list-disc pl-5 space-y-1">
-          <li>Healthy, hand-selected indoor and outdoor plants</li>
-          <li>Safe, eco-friendly packaging and doorstep delivery</li>
-          <li>Easy-to-follow care guides for every plant</li>
-          <li>A nature-inspired shopping experience for every lifestyle</li>
+
+      <div class="md:w-1/2 order-2 md:order-1">
+        <h3 class="text-xl font-semibold text-[#1f4529]">What We Offer</h3>
+        <ul class="mt-3 list-disc pl-5 text-[#1f4529]/80 space-y-1">
+          <li>Healthy hand-selected plants</li>
+          <li>Eco-friendly packaging</li>
+          <li>Easy care guides</li>
+          <li>Nature-inspired shopping experience</li>
         </ul>
-        <button
-          class="mt-5 px-4 py-2 rounded-full bg-[#1f4529]/100 backdrop-blur-md border border-[#1f4529]/30 text-[#ffffff] text-sm font-medium hover:bg-[#ffc911] hover:text-black transition">
-          Know More
-        </button>
+        <button class="mt-5 px-4 py-2 rounded-full bg-[#1f4529] text-white hover:bg-[#ffc911] hover:text-black transition">Know More</button>
       </div>
+
+      <div class="md:w-1/2 order-1 md:order-2">
+        <img src="{% static 'images/plant10.png' %}" class="w-full rounded-xl border-[20px] border-[#1f4529] rounded-bl-[120px] rounded-tr-[120px] shadow-md">
+      </div>
+
     </div>
+
   </div>
 </section>
 
-<!-- ========== CUSTOMER REVIEWS ========== -->
-<section id="reviews" class="bg-white py-16">
+
+
+<!-- ================= CUSTOMER REVIEWS ================= -->
+<section class="bg-white py-16">
   <div class="max-w-6xl mx-auto px-6">
-    <h2 class="text-2xl md:text-3xl font-bold text-center text-[#1f4529] mb-12">
-      <span class="text-[#1f4529]">Customer</span>
-      <span class="text-[#e3de61]"> Review</span>
+
+    <h2 class="text-3xl font-bold text-center text-[#1f4529] mb-12">
+      Customer <span class="text-[#e3de61]">Reviews</span>
     </h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Review Card 1 -->
-      <div class="relative bg-white border-[7px] border-[#1f4529]/100 rounded-[5px]  rounded-bl-[120px] rounded-tr-[120px] p-10 shadow-lg">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+      <!-- Review 1 -->
+      <div class="relative bg-white border-[7px] border-[#1f4529] rounded-xl rounded-bl-[120px] rounded-tr-[120px] p-10 shadow-lg">
         <div class="flex items-center gap-4">
-          <img src="{% static 'images/plant11.png' %}" alt="Customer 1" class="w-16 h-16 rounded-full object-cover border-2 border-[#1f4529]">
+          <img src="{% static 'images/plant11.png' %}" class="w-16 h-16 rounded-full object-cover border-2 border-[#1f4529]">
           <div>
             <h4 class="text-lg font-semibold text-[#1f4529]">Rahul K</h4>
             <p class="text-sm text-[#1f4529]/70">Hyderabad</p>
           </div>
         </div>
-
-        <p class="mt-4 text-[#1f4529]/80 leading-7">
-          “Amazing quality plants! They arrived healthy and fresh. The care guide they give for
-          each plant is super useful for beginners like me.”
-        </p>
-
-        <!-- Rating badge - bottom right -->
-        <div class="absolute bottom-4 right-4 bg-white border border-[#1f4529] rounded-full px-3 py-1 text-sm font-semibold text-[#1f4529] flex items-center gap-1 shadow">
-          4.8
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-[#ffc911]" viewBox="0 0 24 24">
-            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 18.896l-7.416 4.517 1.48-8.279L0 9.306l8.332-1.151z"/>
-          </svg>
+        <p class="mt-4 text-[#1f4529]/80 leading-7">“Amazing quality plants! They arrived healthy and fresh.”</p>
+        <div class="absolute bottom-4 right-4 bg-white border border-[#1f4529] rounded-full px-3 py-1 text-sm font-semibold flex gap-1">
+          4.8 ⭐
         </div>
       </div>
 
-      <!-- Review Card 2 -->
-      <div class="relative bg-white border-[7px] border-[#1f4529]/100 rounded-[5px]  rounded-br-[120px] rounded-tl-[120px] p-10 shadow-lg">
+      <!-- Review 2 -->
+      <div class="relative bg-white border-[7px] border-[#1f4529] rounded-xl rounded-br-[120px] rounded-tl-[120px] p-10 shadow-lg">
         <div class="flex items-center gap-4">
-          <img src="{% static 'images/plant12.png' %}" alt="Customer 2" class="w-16 h-16 rounded-full object-cover border-2 border-[#1f4529]">
+          <img src="{% static 'images/plant12.png' %}" class="w-16 h-16 rounded-full object-cover border-2 border-[#1f4529]">
           <div>
             <h4 class="text-lg font-semibold text-[#1f4529]">Divya P</h4>
             <p class="text-sm text-[#1f4529]/70">Coimbatore</p>
           </div>
         </div>
-
-        <p class="mt-4 text-[#1f4529]/80 leading-7">
-          “Loved the packaging and fast delivery. The team also helped me pick the right indoor
-          plants for low light. Highly recommend Vetri Garden!”
-        </p>
-
-        <!-- Rating badge - bottom right -->
-        <div class="absolute bottom-5 right-12 bg-white border border-[#1f4529] rounded-full px-3 py-1 text-sm font-semibold text-[#1f4529] flex items-center gap-1 shadow">
-          4.9
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-[#ffc911]" viewBox="0 0 24 24">
-            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 18.896l-7.416 4.517 1.48-8.279L0 9.306l8.332-1.151z"/>
-          </svg>
+        <p class="mt-4 text-[#1f4529]/80 leading-7">“Loved the packaging and fast delivery. Highly recommend!”</p>
+        <div class="absolute bottom-4 right-4 bg-white border border-[#1f4529] rounded-full px-3 py-1 text-sm font-semibold flex gap-1">
+          4.9 ⭐
         </div>
       </div>
+
     </div>
 
-    <!-- Minimal slider dots (static / just for look) -->
-    <div class="mt-10 flex justify-center gap-2">
-      <span class="w-8 h-[3px] bg-[#1f4529] rounded-full"></span>
-      <span class="w-4 h-[3px] bg-[#1f4529]/30 rounded-full"></span>
-      <span class="w-4 h-[3px] bg-[#1f4529]/30 rounded-full"></span>
-    </div>
   </div>
 </section>
 
 {% endblock %}
 
+
+
+<!-- ================= SLIDER SCRIPT ================= -->
 {% block extra_scripts %}
-<!-- Slider Script -->
 <script>
 let currentSlide = 0;
-const slider = document.getElementById('slider');
-const slides = Array.from(slider.children);
-const dots = Array.from(document.querySelectorAll('.dot'));
-const totalSlides = slides.length;
+const slider = document.getElementById("slider");
+const slides = slider.children;
+const dots = document.querySelectorAll(".dot");
 
 function updateSlider() {
   slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-  dots.forEach((dot, i) => {
-    dot.classList.toggle('bg-white', i === currentSlide);
-    dot.classList.toggle('bg-white/70', i !== currentSlide);
+  dots.forEach((dot, index) => {
+    dot.style.backgroundColor = index === currentSlide ? "white" : "rgba(255,255,255,0.5)";
   });
 }
 
 function nextSlide() {
-  currentSlide = (currentSlide + 1) % totalSlides;
+  currentSlide = (currentSlide + 1) % slides.length;
   updateSlider();
 }
 
 function prevSlide() {
-  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
   updateSlider();
 }
 
-function goToSlide(index) {
-  currentSlide = index;
+function goToSlide(i) {
+  currentSlide = i;
   updateSlider();
 }
 
-document.addEventListener('DOMContentLoaded', updateSlider);
-window.addEventListener('resize', updateSlider);
+// Auto slide
+setInterval(nextSlide, 4000);
 </script>
 {% endblock %}

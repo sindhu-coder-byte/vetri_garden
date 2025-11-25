@@ -6,75 +6,111 @@
 {% block content %}
 <main class="bg-[#E8ECD7] min-h-screen pb-24 font-inter">
 
-  <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
 
-    <!-- Left Side: Images -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#416457] p-6 rounded-3xl mb-6">
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="object-contain h-80 w-80">
+    <!-- 🌿 Left Side: Product Image -->
+    <div class="flex flex-col items-center w-full">
+
+      <div class="bg-[#416457] p-4 sm:p-6 rounded-3xl mb-6 shadow-lg w-full flex justify-center">
+        <img src="{{ product.image.url }}" 
+             alt="{{ product.name }}" 
+             class="object-contain h-60 w-60 sm:h-80 sm:w-80 mx-auto">
       </div>
+
       <!-- Thumbnails -->
-      <div class="flex gap-4">
+      <div class="flex gap-3 sm:gap-4 flex-wrap justify-center">
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="h-20 w-20 object-contain rounded-lg border-2 border-[#ffc911] cursor-pointer">
+          <img src="{{ product.image.url }}"
+               class="h-16 w-16 sm:h-20 sm:w-20 object-contain rounded-lg border-2 border-[#ffc911] cursor-pointer shadow-md">
         {% endif %}
       </div>
-      <p class="mt-4 text-[#1F4529] font-semibold text-center">{{ product.get_category_display }}</p>
+
+      <p class="mt-4 text-[#1F4529] font-semibold text-center text-lg">
+        {{ product.get_category_display }}
+      </p>
     </div>
 
-    <!-- Right Side: Product Info -->
+    <!-- 🌱 Right Side: Product Info -->
     <div class="flex flex-col gap-4">
-      <h1 class="text-4xl font-bold text-[#1F4529]">{{ product.name }}</h1>
-      <p class="text-[#416457] text-lg">{{ product.description }}</p>
 
-      <!-- Price -->
-      <div class="flex items-center gap-4 text-2xl">
-        <span class="line-through text-[#a1a909]">₹{{ product.price|add:"200" }}</span>
-        <span class="font-bold text-[#1F4529]">₹{{ product.price }}</span>
+      <!-- Name -->
+      <h1 class="text-3xl sm:text-4xl font-bold text-[#1F4529] leading-tight">
+        {{ product.name }}
+      </h1>
+
+      <!-- Description -->
+      <p class="text-[#416457] text-base sm:text-lg leading-relaxed">
+        {{ product.description }}
+      </p>
+
+      <!-- Price Section -->
+      <div class="flex flex-wrap items-center gap-3 sm:gap-4 text-xl sm:text-2xl mt-2">
+        <span class="line-through text-[#a1a909]">
+          ₹{{ product.price|add:"200" }}
+        </span>
+        <span class="font-bold text-[#1F4529]">
+          ₹{{ product.price }}
+        </span>
       </div>
 
       <!-- Rating -->
-      <div class="flex items-center gap-2">
-        <span class="text-[#ffc911]">★★★★☆</span>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="text-[#ffc911] text-xl">★★★★☆</span>
         <span class="text-[#1F4529] font-semibold">4.0</span>
       </div>
 
       <!-- Size Options -->
-      <div class="flex gap-2 mt-4">
-        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">S</button>
-        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">M</button>
-        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">L</button>
-        <button class="px-4 py-2 border border-[#1F4529] text-[#1F4529] rounded-md hover:bg-[#1F4529] hover:text-white transition">XL</button>
+      <div class="flex flex-wrap gap-2 mt-4">
+        {% for size in "S M L XL".split %}
+          <button class="px-4 py-2 text-sm sm:text-base border border-[#1F4529] text-[#1F4529] rounded-md 
+                         hover:bg-[#1F4529] hover:text-white transition">
+            {{ size }}
+          </button>
+        {% endfor %}
       </div>
 
-      <!-- Quantity + Buy Button -->
-      <div class="flex items-center gap-4 mt-6">
+      <!-- Quantity Selector + Buy Now -->
+      <div class="flex flex-wrap items-center gap-4 mt-6">
+
         <!-- Quantity Box -->
         <div class="flex items-center border border-[#1F4529] rounded-md overflow-hidden">
-          <button id="decrease" class="px-4 py-2 text-[#1F4529] font-semibold hover:bg-[#1F4529] hover:text-white transition">-</button>
-          <input 
-            id="quantity"
-            type="text" 
-            value="1" 
-            class="w-12 text-center text-[#1F4529] font-medium border-x border-[#1F4529] focus:outline-none"
-          >
-          <button id="increase" class="px-4 py-2 text-[#1F4529] font-semibold hover:bg-[#1F4529] hover:text-white transition">+</button>
+          <button id="decrease"
+                  class="px-3 sm:px-4 py-2 text-[#1F4529] font-semibold 
+                         hover:bg-[#1F4529] hover:text-white transition">
+            -
+          </button>
+
+          <input id="quantity"
+                 type="text"
+                 value="1"
+                 class="w-10 sm:w-12 text-center text-[#1F4529] font-medium 
+                        border-x border-[#1F4529] focus:outline-none">
+
+          <button id="increase"
+                  class="px-3 sm:px-4 py-2 text-[#1F4529] font-semibold 
+                         hover:bg-[#1F4529] hover:text-white transition">
+            +
+          </button>
         </div>
 
-        <!-- Buy Now Button -->
-        <a 
-          id="buy-now" 
-          href="{% url 'add_to_cart' product.id %}?quantity=1" 
-          class="px-6 py-3 bg-[#1F4529] text-white font-semibold rounded-full hover:bg-[#ffc911] hover:text-black transition"
-        >
+        <!-- Buy Now -->
+        <a id="buy-now"
+           href="{% url 'add_to_cart' product.id %}?quantity=1"
+           class="px-5 sm:px-6 py-3 bg-[#1F4529] text-white font-semibold rounded-full
+                  hover:bg-[#ffc911] hover:text-black transition shadow-md text-sm sm:text-base">
           Buy Now
         </a>
+
       </div>
 
       <!-- Care Instructions -->
-      <div class="mt-10">
-        <h2 class="text-2xl font-semibold text-[#1F4529] mb-2">Care Instructions</h2>
-        <p class="text-[#416457]">{{ product.care_instructions|default:"Care instructions will be added soon." }}</p>
+      <div class="mt-8 sm:mt-10">
+        <h2 class="text-xl sm:text-2xl font-semibold text-[#1F4529] mb-2">
+          Care Instructions
+        </h2>
+        <p class="text-[#416457] leading-relaxed text-base sm:text-lg">
+          {{ product.care_instructions|default:"Care instructions will be added soon." }}
+        </p>
       </div>
 
     </div>
@@ -83,7 +119,7 @@
 
 </main>
 
-<!-- Quantity JS -->
+<!-- JS: Quantity Handler -->
 <script>
   const quantityInput = document.getElementById('quantity');
   const increaseBtn = document.getElementById('increase');

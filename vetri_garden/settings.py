@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-n)u#%^k1$n#g@&g3xm@fumeun^*s67d5-i6xn8jx5_!x5ky6m#
 DEBUG = True
 
 # settings.py
-ALLOWED_HOSTS = ['vetri-garden.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['*']
+
 
 
 
@@ -115,8 +116,11 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 
-RAZORPAY_KEY_ID = "rzp_test_RQS0YCB69INaUp"
-RAZORPAY_KEY_SECRET = "LmTZITYP1vfmtONTsUEor0Ue"
+import os
+
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+
 
 
 # Email config (example – use your Gmail credentials)
