@@ -3,138 +3,525 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if mode == 'signup' %}Sign Up{% else %}Sign In{% endif %} • Vetri Garden</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Inter&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --green-dark: #1F4529;
-      --green-light: #416457;
-      --yellow: #ffc911;
-      --bg-light: #E8ECD7;
-      --white: #ffffff;
-      --font: 'Montserrat', 'Inter', sans-serif;
+    body { font-family: 'Inter', sans-serif; }
+    h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
+
+    /* ── Input base ── */
+    .fi {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-size: 0.875rem;
+      background: #fafafa;
+      color: #111827;
+      font-family: 'Inter', sans-serif;
     }
-    body { background-color: var(--bg-light); font-family: var(--font); }
-    input, select { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; }
-    input:focus, select:focus { border-color: var(--green-dark); box-shadow: 0 0 4px var(--green-light); }
-    label { font-weight: 600; color: var(--green-dark); }
-    .errorlist { color: red; font-size: 0.9rem; margin-bottom: 5px; }
+    .fi:focus { border-color: #1f4529; box-shadow: 0 0 0 3px rgba(31,69,41,0.10); background: #fff; }
+    .fi.ok    { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.10); background: #fff; }
+    .fi.err   { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.10); background: #fff; }
+
+    textarea.fi { resize: none; }
+    select.fi   { appearance: none; cursor: pointer; }
+
+    label { font-weight: 600; color: #374151; font-size: 0.78rem;
+            display: block; margin-bottom: 5px; letter-spacing: 0.03em; text-transform: uppercase; }
+
+    .errorlist  { color: #dc2626; font-size: 0.76rem; margin-top: 4px; list-style: none; padding: 0; }
+    .v-msg      { font-size: 0.74rem; margin-top: 4px; display: none; }
+    .v-msg.show { display: flex; align-items: center; gap: 4px; }
+
+    /* ── Password strength bar ── */
+    .strength-bar { display: flex; gap: 4px; margin-top: 6px; }
+    .strength-bar span {
+      flex: 1; height: 4px; border-radius: 2px;
+      background: #e5e7eb;
+      transition: background 0.3s;
+    }
+    .strength-bar.s1 span:nth-child(1) { background: #ef4444; }
+    .strength-bar.s2 span:nth-child(-n+2) { background: #f59e0b; }
+    .strength-bar.s3 span:nth-child(-n+3) { background: #3b82f6; }
+    .strength-bar.s4 span:nth-child(-n+4) { background: #22c55e; }
+
+    /* ── Scrollbar ── */
+    .form-panel { overflow-y: visible; }
+
+    /* ── Card animation ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .card { animation: fadeUp 0.45s ease both; }
+
+    /* ── Left panel dots decoration ── */
+    .dot-grid { position:absolute; bottom:0; right:0; opacity:0.08;
+                width:120px; height:120px; pointer-events:none;
+                background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+                background-size: 14px 14px; }
+
+    /* ── Avatar preview ── */
+    #avatar-preview { display:none; width:56px; height:56px; border-radius:50%;
+                      object-fit:cover; border:2px solid #1f4529; margin-top:8px; }
+    #avatar-preview.show { display:block; }
+
+    /* ── Loading spinner ── */
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner { display:inline-block; width:16px; height:16px; border:2px solid #fff;
+               border-top-color:transparent; border-radius:50%;
+               animation:spin .6s linear infinite; vertical-align:middle; }
   </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
 
-  <div class="bg-white shadow-2xl rounded-3xl w-[90%] max-w-3xl grid md:grid-cols-2 overflow-hidden">
+<body class="min-h-screen flex items-start justify-center bg-[#E8ECD7] px-4 py-10">
 
-    <!-- 🌿 Left Side -->
-    <div class="bg-[var(--green-dark)] text-white flex flex-col justify-center items-center p-10">
-      <h1 class="text-4xl font-bold mb-4">Vetri Garden 🌿</h1>
-      <p class="text-lg text-center mb-8">
-        {% if mode == 'signup' %}
-          Already have an account? Log in below.
-        {% else %}
-          New here? Join and grow with us!
-        {% endif %}
-      </p>
+<div class="card bg-white shadow-2xl rounded-3xl w-full max-w-3xl overflow-hidden">
+  <div class="grid md:grid-cols-2">
+
+    <!-- ═══════════ LEFT PANEL ═══════════ -->
+    <div class="relative bg-[#1f4529] text-white flex flex-col justify-between p-8 sm:p-10 min-h-[280px] overflow-hidden">
+      <div class="dot-grid"></div>
+
+      <div class="relative z-10">
+        <a href="{% url 'home' %}" class="flex items-center gap-2 mb-8 w-fit">
+          <img src="{% static 'images/plant22.png' %}" class="h-8" alt="Logo">
+          <span class="font-bold text-lg tracking-wide">Vetri Garden</span>
+        </a>
+
+        <h2 class="text-3xl sm:text-4xl font-bold leading-tight mb-3">
+          {% if mode == 'signup' %}
+            Join our<br><span class="text-[#ffc911]">green</span> family
+          {% else %}
+            Welcome<br><span class="text-[#ffc911]">back! 🌿</span>
+          {% endif %}
+        </h2>
+
+        <p class="text-white/70 text-sm leading-relaxed mt-2">
+          {% if mode == 'signup' %}
+            Already have an account?<br>Sign in and keep growing.
+          {% else %}
+            New here?<br>Create a free account and start your green journey.
+          {% endif %}
+        </p>
+      </div>
+
       <button id="toggleBtn"
-        class="bg-[var(--yellow)] text-[var(--green-dark)] px-6 py-2 rounded-full font-semibold transition hover:bg-white hover:text-[var(--green-dark)]">
-        {% if mode == 'signup' %}Go to Login{% else %}Create Account{% endif %}
+        class="relative z-10 mt-8 px-8 py-3 bg-[#ffc911] text-[#1f4529] rounded-full
+               font-bold text-sm hover:bg-white transition duration-300 shadow-lg w-full sm:w-auto">
+        {% if mode == 'signup' %}Sign In Instead{% else %}Create Account{% endif %}
       </button>
     </div>
 
-    <!-- 🌸 Right Side: Form -->
-    <div class="p-10 flex flex-col justify-center">
-      <h2 class="text-3xl font-bold text-[var(--green-dark)] mb-6">
-        {% if mode == 'signup' %}Sign Up{% else %}Sign In{% endif %}
-      </h2>
+    <!-- ═══════════ RIGHT PANEL ═══════════ -->
+    <div class="form-panel p-8 sm:p-10">
+      <h3 class="text-2xl font-bold text-[#1f4529] mb-1">
+        {% if mode == 'signup' %}Create Account{% else %}Sign In{% endif %}
+      </h3>
+      <p class="text-gray-400 text-xs mb-6">
+        {% if mode == 'signup' %}Fill in the details to get started{% else %}Enter your credentials to continue{% endif %}
+      </p>
 
-      <form method="POST" class="flex flex-col gap-4">
+      <!-- Server messages -->
+      {% if messages %}
+      <div class="mb-5 space-y-1">
+        {% for msg in messages %}
+        <div class="flex items-center gap-2 text-sm px-4 py-2.5 rounded-xl
+          {% if 'error' in msg.tags or 'warning' in msg.tags %}bg-red-50 text-red-600 border border-red-200
+          {% else %}bg-green-50 text-green-700 border border-green-200{% endif %}">
+          <span>{% if 'error' in msg.tags or 'warning' in msg.tags %}✕{% else %}✓{% endif %}</span>
+          {{ msg }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="POST" enctype="multipart/form-data" id="mainForm" novalidate class="flex flex-col gap-4">
         {% csrf_token %}
 
         <!-- Username -->
         <div>
-          {{ form.username.label_tag }}
-          {{ form.username }}
+          <label for="id_username">Username</label>
+          <div class="relative">
+            {{ form.username }}
+            <span id="icon-username" class="absolute right-3 top-1/2 -translate-y-1/2 text-base pointer-events-none"></span>
+          </div>
           {{ form.username.errors }}
+          <p id="msg-username" class="v-msg text-red-500"></p>
         </div>
 
         {% if mode == 'signup' %}
-        <!-- Profile Image -->
-<div>
-  <label for="id_profile_image">Profile Image</label>
-  {{ form.profile_image }}
-  {{ form.profile_image.errors }}
-</div>
 
-<!-- Address -->
-<div>
-  <label for="id_address">Address</label>
-  {{ form.address }}
-  {{ form.address.errors }}
-</div>
-          <!-- Email -->
-          <div>
-            {{ form.email.label_tag }}
+        <!-- Email -->
+        <div>
+          <label for="id_email">Email Address</label>
+          <div class="relative">
             {{ form.email }}
-            {{ form.email.errors }}
+            <span id="icon-email" class="absolute right-3 top-1/2 -translate-y-1/2 text-base pointer-events-none"></span>
           </div>
+          {{ form.email.errors }}
+          <p id="msg-email" class="v-msg"></p>
+        </div>
 
-          <!-- Phone -->
-          <div>
-            {{ form.phone.label_tag }}
-            {{ form.phone }}
-            {{ form.phone.errors }}
+        <!-- Phone -->
+        <div>
+          <label for="id_phone">Phone Number</label>
+          <div class="flex gap-2">
+            <span class="fi w-16 flex items-center justify-center text-sm text-gray-500 bg-gray-50 flex-none">+91</span>
+            <div class="relative flex-1">
+              {{ form.phone }}
+              <span id="icon-phone" class="absolute right-3 top-1/2 -translate-y-1/2 text-base pointer-events-none"></span>
+            </div>
           </div>
+          {{ form.phone.errors }}
+          <p id="msg-phone" class="v-msg"></p>
+        </div>
 
-          <!-- Role -->
-          <div>
-            <label for="id_role">Role</label>
-            <select name="role" id="id_role" class="border rounded p-2">
-              <option value="customer" selected>Customer 🌱</option>
-              <option value="seller">Seller 🛒</option>
+        <!-- Address -->
+        <div>
+          <label for="id_address">Delivery Address</label>
+          {{ form.address }}
+          {{ form.address.errors }}
+        </div>
+
+        <!-- Role -->
+        <div>
+          <label for="id_role">I am a…</label>
+          <div class="relative">
+            <select name="role" id="id_role" class="fi pr-8">
+              <option value="customer" {% if form.role.value == 'customer' %}selected{% endif %}>Customer 🌱</option>
+              <option value="seller"   {% if form.role.value == 'seller'   %}selected{% endif %}>Seller 🛒</option>
             </select>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
           </div>
+          {% if form.role.errors %}<ul class="errorlist">{% for e in form.role.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
 
-          <!-- Password -->
-          <div>
-            {{ form.password1.label_tag }}
+        <!-- Profile Image -->
+        <div>
+          <label for="id_profile_image">
+            Profile Image <span class="text-gray-400 font-normal normal-case">(optional)</span>
+          </label>
+          <div class="flex items-center gap-4">
+            {{ form.profile_image }}
+            <img id="avatar-preview" src="" alt="Preview">
+          </div>
+          {{ form.profile_image.errors }}
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="id_password1">Password</label>
+          <div class="relative">
             {{ form.password1 }}
-            {{ form.password1.errors }}
+            <button type="button" onclick="togglePwd('id_password1','eye1')"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1f4529] transition">
+              <svg id="eye1" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
           </div>
+          {{ form.password1.errors }}
+          <!-- Strength bar -->
+          <div class="strength-bar" id="strength-bar">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <p id="msg-pwd-strength" class="v-msg text-xs font-semibold mt-1"></p>
+          <!-- Rules hint -->
+          <ul id="pwd-rules" class="mt-2 space-y-0.5 text-[11px] text-gray-400">
+            <li id="rule-len"  class="flex items-center gap-1.5"><span>○</span> At least 8 characters</li>
+            <li id="rule-up"   class="flex items-center gap-1.5"><span>○</span> One uppercase letter</li>
+            <li id="rule-num"  class="flex items-center gap-1.5"><span>○</span> One number</li>
+            <li id="rule-sym"  class="flex items-center gap-1.5"><span>○</span> One special character</li>
+          </ul>
+        </div>
 
-          <div>
-            {{ form.password2.label_tag }}
+        <!-- Confirm Password -->
+        <div>
+          <label for="id_password2">Confirm Password</label>
+          <div class="relative">
             {{ form.password2 }}
-            {{ form.password2.errors }}
+            <button type="button" onclick="togglePwd('id_password2','eye2')"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1f4529] transition">
+              <svg id="eye2" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
           </div>
+          {{ form.password2.errors }}
+          <p id="msg-pwd-match" class="v-msg"></p>
+        </div>
 
         {% else %}
-          <!-- Password for Sign In -->
-          <div>
-            <label for="id_password">Password</label>
+
+        <!-- Sign-in password -->
+        <div>
+          <label for="id_password">Password</label>
+          <div class="relative">
             {{ form.password }}
-            {{ form.password.errors }}
+            <button type="button" onclick="togglePwd('id_password','eye-login')"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1f4529] transition">
+              <svg id="eye-login" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
           </div>
+          {{ form.password.errors }}
+        </div>
+
+        <!-- Remember me + Forgot password -->
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center gap-2 cursor-pointer normal-case font-normal text-gray-600" style="text-transform:none">
+            <input type="checkbox" name="remember_me" id="remember_me"
+                   class="w-4 h-4 accent-[#1f4529] cursor-pointer">
+            Remember me
+          </label>
+          <a href="#" class="text-[#1f4529] font-semibold hover:text-[#ffc911] transition text-xs">
+            Forgot password?
+          </a>
+        </div>
+
         {% endif %}
 
-        <button type="submit"
-          class="mt-4 bg-[var(--green-dark)] text-white py-2 rounded-full hover:bg-[var(--yellow)] hover:text-[var(--green-dark)] transition font-semibold">
-          {% if mode == 'signup' %}Register{% else %}Login{% endif %}
+        <!-- Submit -->
+        <button type="submit" id="submitBtn"
+          class="mt-2 w-full py-3 bg-[#1f4529] text-white rounded-full font-bold text-sm
+                 hover:bg-[#ffc911] hover:text-[#1f4529] transition duration-300 shadow-md
+                 flex items-center justify-center gap-2">
+          <span id="btn-text">{% if mode == 'signup' %}Create Account{% else %}Sign In{% endif %}</span>
         </button>
+
+        {% if mode == 'login' %}
+        <p class="text-center text-xs text-gray-400 mt-1">
+          By signing in you agree to our
+          <a href="#" class="text-[#1f4529] font-semibold hover:underline">Terms</a> &
+          <a href="#" class="text-[#1f4529] font-semibold hover:underline">Privacy Policy</a>.
+        </p>
+        {% endif %}
+
       </form>
     </div>
+    <!-- end right panel -->
 
   </div>
+</div>
 
-  <!-- Toggle Between Login & Signup -->
-  <script>
-    document.getElementById("toggleBtn").onclick = function() {
-      const url = window.location.pathname.includes('register')
-        ? "{% url 'accounts:login' %}"
-        : "{% url 'accounts:register' %}";
-      window.location.href = url;
-    };
-  </script>
+<script>
+/* ── Toggle Sign-in / Sign-up panels ── */
+document.getElementById('toggleBtn').onclick = () => {
+  window.location.href = window.location.pathname.includes('register')
+    ? "{% url 'accounts:login' %}"
+    : "{% url 'accounts:register' %}";
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* Apply .fi to all Django-rendered form inputs */
+  document.querySelectorAll(
+    'input:not([type=file]):not([type=submit]):not([type=button]):not([type=checkbox]), textarea, select'
+  ).forEach(el => el.classList.add('fi'));
+
+  /* ═══════════════ SIGNUP ONLY ═══════════════ */
+  {% if mode == 'signup' %}
+
+  const usernameEl = document.getElementById('id_username');
+  const emailEl    = document.getElementById('id_email');
+  const phoneEl    = document.getElementById('id_phone');
+  const pwd1El     = document.getElementById('id_password1');
+  const pwd2El     = document.getElementById('id_password2');
+  const fileEl     = document.getElementById('id_profile_image');
+  const bar        = document.getElementById('strength-bar');
+
+  /* Set input types */
+  if (emailEl) emailEl.type = 'email';
+  if (phoneEl) phoneEl.type = 'tel';
+  if (pwd1El)  { pwd1El.type = 'password'; pwd1El.autocomplete = 'new-password'; }
+  if (pwd2El)  { pwd2El.type = 'password'; pwd2El.autocomplete = 'new-password'; }
+
+  /* ── Username: min 3 chars, alphanumeric/underscore ── */
+  if (usernameEl) {
+    usernameEl.addEventListener('input', () => {
+      const v = usernameEl.value.trim();
+      const icon = document.getElementById('icon-username');
+      if (!v) { clear('id_username','msg-username'); if(icon) icon.textContent=''; return; }
+      if (v.length < 3) {
+        vMsg('id_username','msg-username','Username must be at least 3 characters.','err');
+        if(icon) icon.textContent = '✕';
+      } else if (!/^[a-zA-Z0-9_]+$/.test(v)) {
+        vMsg('id_username','msg-username','Only letters, numbers and underscores allowed.','err');
+        if(icon) icon.textContent = '✕';
+      } else {
+        vMsg('id_username','msg-username','✓ Looks good!','ok');
+        if(icon) icon.textContent = '✓';
+        if(icon) icon.style.color = '#22c55e';
+      }
+    });
+  }
+
+  /* ── Email ── */
+  if (emailEl) {
+    emailEl.addEventListener('blur', () => {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const v  = emailEl.value.trim();
+      const icon = document.getElementById('icon-email');
+      if (!v) { vMsg('id_email','msg-email','Email is required.','err'); if(icon) icon.textContent='✕'; return; }
+      if (!re.test(v)) { vMsg('id_email','msg-email','Enter a valid email address.','err'); if(icon) icon.textContent='✕'; }
+      else { vMsg('id_email','msg-email','✓ Looks good!','ok'); if(icon){icon.textContent='✓';icon.style.color='#22c55e';} }
+    });
+  }
+
+  /* ── Phone ── */
+  if (phoneEl) {
+    phoneEl.addEventListener('blur', () => {
+      const v = phoneEl.value.trim().replace(/[\s\-]/g,'');
+      const icon = document.getElementById('icon-phone');
+      if (!v) { vMsg('id_phone','msg-phone','Phone number is required.','err'); if(icon) icon.textContent='✕'; return; }
+      if (!/^\d{10,15}$/.test(v)) { vMsg('id_phone','msg-phone','Enter a valid 10–15 digit number.','err'); if(icon) icon.textContent='✕'; }
+      else { vMsg('id_phone','msg-phone','✓ Valid number','ok'); if(icon){icon.textContent='✓';icon.style.color='#22c55e';} }
+    });
+  }
+
+  /* ── Password strength ── */
+  const rules = {
+    len: v => v.length >= 8,
+    up:  v => /[A-Z]/.test(v),
+    num: v => /[0-9]/.test(v),
+    sym: v => /[^A-Za-z0-9]/.test(v),
+  };
+  if (pwd1El) {
+    pwd1El.addEventListener('input', () => {
+      const v = pwd1El.value;
+      const msg = document.getElementById('msg-pwd-strength');
+
+      /* Update rule checklist */
+      Object.entries(rules).forEach(([key, fn]) => {
+        const li   = document.getElementById('rule-' + key);
+        const dot  = li.querySelector('span');
+        if (fn(v)) { li.classList.remove('text-gray-400'); li.classList.add('text-green-600'); dot.textContent = '●'; }
+        else       { li.classList.remove('text-green-600'); li.classList.add('text-gray-400'); dot.textContent = '○'; }
+      });
+
+      if (!v) { bar.className = 'strength-bar'; if(msg) msg.classList.remove('show'); return; }
+
+      const score = Object.values(rules).filter(fn => fn(v)).length;
+      bar.className = 'strength-bar s' + score;
+
+      const labels = ['','Weak','Fair','Good','Strong'];
+      const colors = ['','text-red-500','text-yellow-500','text-blue-500','text-green-600'];
+      if (msg) {
+        msg.textContent = 'Strength: ' + labels[score];
+        msg.className   = 'v-msg show text-xs font-semibold ' + colors[score];
+      }
+    });
+  }
+
+  /* ── Confirm password match ── */
+  if (pwd2El) {
+    pwd2El.addEventListener('input', () => {
+      if (!pwd2El.value || !pwd1El.value) return;
+      if (pwd1El.value !== pwd2El.value) vMsg('id_password2','msg-pwd-match','✕ Passwords do not match.','err');
+      else                               vMsg('id_password2','msg-pwd-match','✓ Passwords match','ok');
+    });
+  }
+
+  /* ── Profile image preview ── */
+  if (fileEl) {
+    fileEl.addEventListener('change', () => {
+      const file = fileEl.files[0];
+      const preview = document.getElementById('avatar-preview');
+      if (file && preview) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.add('show');
+      }
+    });
+  }
+
+  /* ── Submit guard ── */
+  document.getElementById('mainForm').addEventListener('submit', e => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let ok = true;
+    if (emailEl && !re.test(emailEl.value.trim())) {
+      vMsg('id_email','msg-email','Enter a valid email address.','err'); ok = false;
+    }
+    if (pwd1El && pwd2El && pwd1El.value !== pwd2El.value) {
+      vMsg('id_password2','msg-pwd-match','✕ Passwords do not match.','err'); ok = false;
+    }
+    if (ok) {
+      const btn  = document.getElementById('submitBtn');
+      const text = document.getElementById('btn-text');
+      if (btn && text) {
+        btn.disabled = true;
+        text.innerHTML = '<span class="spinner"></span> Creating account…';
+      }
+    } else {
+      e.preventDefault();
+    }
+  });
+
+  {% else %}
+
+  /* ═══════════════ LOGIN ONLY ═══════════════ */
+  const loginPwd = document.getElementById('id_password');
+  if (loginPwd) loginPwd.type = 'password';
+
+  document.getElementById('mainForm').addEventListener('submit', () => {
+    const btn  = document.getElementById('submitBtn');
+    const text = document.getElementById('btn-text');
+    if (btn && text) {
+      btn.disabled = true;
+      text.innerHTML = '<span class="spinner"></span> Signing in…';
+    }
+  });
+
+  {% endif %}
+
+}); // DOMContentLoaded
+
+/* ── Toggle password visibility ── */
+function togglePwd(inputId, eyeId) {
+  const input = document.getElementById(inputId);
+  const eye   = document.getElementById(eyeId);
+  const show  = input.type === 'password';
+  input.type  = show ? 'text' : 'password';
+  eye.innerHTML = show
+    ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+}
+
+/* ── Validation message helper ── */
+function vMsg(inputId, msgId, text, type) {
+  const inp = document.getElementById(inputId);
+  const msg = document.getElementById(msgId);
+  if (!msg) return;
+  msg.textContent = text;
+  msg.classList.add('show');
+  if (type === 'err') {
+    msg.className = 'v-msg show text-red-500 text-xs';
+    if (inp) { inp.classList.remove('ok'); inp.classList.add('err'); }
+  } else {
+    msg.className = 'v-msg show text-green-600 text-xs';
+    if (inp) { inp.classList.remove('err'); inp.classList.add('ok'); }
+  }
+}
+
+function clear(inputId, msgId) {
+  const inp = document.getElementById(inputId);
+  const msg = document.getElementById(msgId);
+  if (inp) { inp.classList.remove('ok','err'); }
+  if (msg) { msg.classList.remove('show'); }
+}
+</script>
 
 </body>
 </html>

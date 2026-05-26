@@ -12,8 +12,13 @@
       <div>
         <!-- Profile Header -->
         <div class="flex items-center gap-4 mb-8">
-          <img src="{% static 'images/profile-icon.png' %}" alt="Profile"
-               class="w-16 h-16 rounded-full bg-white p-2 shadow-lg ring-2 ring-[#ffc911] animate-fadeIn">
+          {% if user.profile_image %}
+            <img src="{{ user.profile_image.url }}" alt="Profile"
+                 class="w-16 h-16 rounded-full object-cover shadow-lg ring-2 ring-[#ffc911] animate-fadeIn">
+          {% else %}
+            <img src="{% static 'images/profile-icon.png' %}" alt="Profile"
+                 class="w-16 h-16 rounded-full bg-white p-2 shadow-lg ring-2 ring-[#ffc911] animate-fadeIn">
+          {% endif %}
           <div>
             <h2 class="text-2xl font-bold tracking-wide">{{ user.first_name|default:user.username }}</h2>
             <p class="text-sm opacity-80 capitalize">{{ user.role }}</p>
@@ -28,13 +33,21 @@
             <p>{{ user.username }}</p>
 
             <p class="font-semibold opacity-80">Full Name:</p>
-            <p>{{ user.first_name }} {{ user.last_name }}</p>
+            <p>{{ user.first_name|default:"—" }} {{ user.last_name }}</p>
 
             <p class="font-semibold opacity-80">Email:</p>
             <p>{{ user.email|default:"Not Provided" }}</p>
 
             <p class="font-semibold opacity-80">Phone:</p>
             <p>{{ user.phone|default:"Not Provided" }}</p>
+
+            <p class="font-semibold opacity-80">Role:</p>
+            <p class="capitalize">{{ user.role|default:"Customer" }}</p>
+
+            {% if user.address %}
+            <p class="font-semibold opacity-80 col-span-2 mt-2">Delivery Address:</p>
+            <p class="col-span-2 text-white/80 leading-5">{{ user.address }}</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -77,7 +90,7 @@
                   {% endif %}
                   <div class="flex flex-col">
                     <h4 class="font-semibold text-[#1f4529] text-base">{{ first_item.product.name }}</h4>
-                    <p class="text-sm text-gray-600">Quantity: {{ first_item.quantity }} | Total: ₹{{ first_item.total_price }}</p>
+                    <p class="text-sm text-gray-600">Quantity: {{ first_item.quantity }} | Total: ₹{{ first_item.subtotal }}</p>
                     <span class="text-xs font-medium px-3 py-1 rounded-full mt-1
                       {% if order.status == 'placed' %}bg-yellow-100 text-yellow-800
                       {% elif order.status == 'delivered' %}bg-green-100 text-green-800

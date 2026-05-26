@@ -4,79 +4,160 @@
 {% block title %}Vetri Garden • Cart{% endblock %}
 
 {% block content %}
-<main class="bg-[#E8ECD7] min-h-screen pb-24 font-inter">
-  <div class="max-w-6xl mx-auto px-6 py-16">
+<main class="bg-[#E8ECD7] min-h-screen pb-24">
 
-    <h1 class="text-4xl font-bold text-[#1F4529] mb-10">🛒 Your Cart</h1>
+  <!-- Page Header -->
+  <div class="bg-[#1f4529] py-10 px-6 sm:px-12">
+    <div class="max-w-6xl mx-auto">
+      <!-- Breadcrumb -->
+      <nav class="text-white/60 text-sm mb-3 flex items-center gap-2">
+        <a href="{% url 'home' %}" class="hover:text-[#ffc911] transition">Home</a>
+        <span>/</span>
+        <a href="{% url 'plants' %}" class="hover:text-[#ffc911] transition">Plants</a>
+        <span>/</span>
+        <span class="text-white font-medium">Cart</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-bold text-white">
+        Your Cart
+        {% if cart %}<span class="ml-3 text-lg font-normal text-[#ffc911]">({{ cart|length }} item{{ cart|length|pluralize }})</span>{% endif %}
+      </h1>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-10">
 
     {% if cart %}
-    <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead class="bg-[#f7f9f4]">
-            <tr>
-              <th class="py-3 px-6 text-[#1F4529] font-semibold">Product</th>
-              <th class="py-3 px-6 text-[#1F4529] font-semibold">Price</th>
-              <th class="py-3 px-6 text-[#1F4529] font-semibold">Quantity</th>
-              <th class="py-3 px-6 text-[#1F4529] font-semibold">Subtotal</th>
-              <th class="py-3 px-6 text-[#1F4529] font-semibold">Remove</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for key, item in cart.items %}
-            <tr class="border-t border-[#E5E7EB] hover:bg-[#f7f9f4] transition">
-              <!-- Product -->
-              <td class="py-4 px-6 flex items-center gap-4">
-                <img src="{{ item.image }}" alt="{{ item.name }}" class="h-20 w-20 object-contain rounded-lg border border-gray-200">
-                <span class="font-medium text-[#1F4529]">{{ item.name }}</span>
-              </td>
+    <div class="grid lg:grid-cols-3 gap-8 items-start">
 
-              <!-- Price -->
-              <td class="py-4 px-6 text-[#416457] font-semibold">₹{{ item.price|floatformat:2 }}</td>
+      <!-- Cart Items -->
+      <div class="lg:col-span-2 space-y-4">
+        {% for key, item in cart.items %}
+        <div class="bg-white rounded-2xl shadow-sm border border-[#1f4529]/10 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-5 hover:shadow-md transition duration-300">
 
-              <!-- Quantity -->
-              <td class="py-4 px-6">
-                <div class="flex items-center border border-[#1F4529] rounded-md overflow-hidden w-fit">
-                  <a href="{% url 'add_to_cart' key %}?quantity=-1&next={{ request.path }}"
-                     class="px-3 py-1 text-[#1F4529] hover:bg-[#1F4529] hover:text-white transition">−</a>
-                  <span class="px-4 text-[#1F4529] font-semibold bg-[#f8faf6]">{{ item.quantity }}</span>
-                  <a href="{% url 'add_to_cart' key %}?quantity=1&next={{ request.path }}"
-                     class="px-3 py-1 text-[#1F4529] hover:bg-[#1F4529] hover:text-white transition">+</a>
-                </div>
-              </td>
+          <!-- Image -->
+          <div class="w-24 h-24 flex-none rounded-xl overflow-hidden border border-gray-100 bg-[#f7f9f4]">
+            <img src="{{ item.image }}" alt="{{ item.name }}" class="w-full h-full object-contain p-1">
+          </div>
 
-              <!-- Subtotal -->
-              <td class="py-4 px-6 text-[#1F4529] font-semibold">₹{{ item.subtotal|floatformat:2 }}</td>
+          <!-- Info -->
+          <div class="flex-1 min-w-0">
+            <h3 class="font-semibold text-[#1f4529] text-base truncate">{{ item.name }}</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Unit price: <span class="font-medium text-[#1f4529]">₹{{ item.price|floatformat:2 }}</span></p>
 
-              <!-- Remove -->
-              <td class="py-4 px-6">
-                <a href="{% url 'remove_from_cart' key %}" 
-                   class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Remove</a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            <!-- Qty controls -->
+            <div class="flex items-center gap-0 mt-3 border border-[#1f4529]/30 rounded-lg w-fit overflow-hidden">
+              <a href="{% url 'add_to_cart' key %}?quantity=-1&next={{ request.path }}"
+                 class="w-9 h-9 flex items-center justify-center text-[#1f4529] font-bold text-lg hover:bg-[#1f4529] hover:text-white transition">−</a>
+              <span class="w-10 h-9 flex items-center justify-center text-[#1f4529] font-semibold text-sm bg-[#f7f9f4] border-x border-[#1f4529]/30">{{ item.quantity }}</span>
+              <a href="{% url 'add_to_cart' key %}?quantity=1&next={{ request.path }}"
+                 class="w-9 h-9 flex items-center justify-center text-[#1f4529] font-bold text-lg hover:bg-[#1f4529] hover:text-white transition">+</a>
+            </div>
+          </div>
+
+          <!-- Subtotal + Remove -->
+          <div class="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3">
+            <p class="text-lg font-bold text-[#1f4529]">₹{{ item.subtotal|floatformat:2 }}</p>
+            <a href="{% url 'remove_from_cart' key %}"
+               class="flex items-center gap-1 text-xs text-red-500 hover:text-red-700 font-medium transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+              </svg>
+              Remove
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- Continue Shopping -->
+        <div class="pt-2">
+          <a href="{% url 'plants' %}"
+             class="inline-flex items-center gap-2 text-[#1f4529] text-sm font-semibold hover:text-[#ffc911] transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M19 12H5M12 5l-7 7 7 7"/>
+            </svg>
+            Continue Shopping
+          </a>
+        </div>
       </div>
-    </div>
 
-    <!-- Total & Checkout -->
-    <div class="mt-10 flex flex-col sm:flex-row justify-end items-center gap-6">
-      <div class="text-right">
-        <p class="text-2xl font-bold text-[#1F4529]">Total:</p>
-        <p class="text-3xl font-bold text-[#ffc911] mt-1">₹{{ total|floatformat:2 }}</p>
+      <!-- Order Summary -->
+      <div class="bg-white rounded-2xl shadow-sm border border-[#1f4529]/10 p-6 sticky top-6">
+        <h2 class="text-xl font-bold text-[#1f4529] mb-5 pb-4 border-b border-gray-100">Order Summary</h2>
+
+        <div class="space-y-3 text-sm">
+          {% for key, item in cart.items %}
+          <div class="flex justify-between text-gray-600">
+            <span class="truncate pr-2">{{ item.name }} × {{ item.quantity }}</span>
+            <span class="font-medium text-[#1f4529] whitespace-nowrap">₹{{ item.subtotal|floatformat:2 }}</span>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-gray-100 space-y-2 text-sm">
+          <div class="flex justify-between text-gray-600">
+            <span>Subtotal</span>
+            <span>₹{{ total|floatformat:2 }}</span>
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span>Shipping</span>
+            <span class="text-green-600 font-medium">Free</span>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between text-lg font-bold text-[#1f4529]">
+          <span>Total</span>
+          <span class="text-[#ffc911] text-xl">₹{{ total|floatformat:2 }}</span>
+        </div>
+
+        <a href="{% url 'checkout' %}"
+           class="mt-6 block w-full text-center py-3 bg-[#1f4529] text-white font-bold rounded-full
+                  hover:bg-[#ffc911] hover:text-[#1f4529] transition duration-300 shadow-md text-sm">
+          Proceed to Checkout →
+        </a>
+
+        <!-- Trust badges -->
+        <div class="mt-5 pt-4 border-t border-gray-100 grid grid-cols-3 gap-2 text-center text-[10px] text-gray-500">
+          <div class="flex flex-col items-center gap-1">
+            <svg class="w-5 h-5 text-[#1f4529]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            Secure
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <svg class="w-5 h-5 text-[#1f4529]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+            </svg>
+            Easy Pay
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <svg class="w-5 h-5 text-[#1f4529]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            Free Ship
+          </div>
+        </div>
       </div>
-      <a href="{% url 'checkout' %}" class="px-6 py-3 bg-[#1F4529] text-white font-semibold rounded-full hover:bg-[#ffc911] hover:text-black transition">Proceed to Checkout</a>
 
     </div>
 
     {% else %}
-    <div class="text-center py-16 bg-white rounded-3xl shadow-md">
-      <p class="text-[#416457] text-lg">
-        Your cart is empty. 
-        <a href="{% url 'home' %}" class="text-[#1F4529] font-semibold hover:underline">Continue shopping</a>.
-      </p>
+
+    <!-- Empty Cart -->
+    <div class="bg-white rounded-2xl shadow-sm border border-[#1f4529]/10 py-20 px-6 text-center max-w-lg mx-auto">
+      <div class="w-20 h-20 bg-[#E8ECD7] rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-[#1f4529]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-[#1f4529] mb-2">Your cart is empty</h2>
+      <p class="text-gray-500 text-sm mb-8">Looks like you haven't added any plants yet.</p>
+      <a href="{% url 'plants' %}"
+         class="inline-block px-8 py-3 bg-[#1f4529] text-white font-bold rounded-full
+                hover:bg-[#ffc911] hover:text-[#1f4529] transition duration-300 shadow-md text-sm">
+        Browse Plants
+      </a>
     </div>
+
     {% endif %}
 
   </div>

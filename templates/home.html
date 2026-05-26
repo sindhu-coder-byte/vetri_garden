@@ -26,13 +26,17 @@
   <!-- Right Side Glass Slider -->
   <div class="relative w-full max-w-xs sm:max-w-sm md:max-w-sm mx-auto">
 
-    <!-- Discount Badge -->
-    <div class="absolute -top-3 -left-3 w-16 h-16 sm:w-20 sm:h-20 bg-white/10 
-                flex items-center justify-center font-bold 
-                text-sm sm:text-base rounded-full 
-                shadow-[0_0_20px_rgba(255,255,255,0.25)] 
-                border border-white/30 backdrop-blur-md z-20">
-      30%
+    <!-- Discount Badge — overlaps top-left of the glass card like screenshot -->
+    <div class="absolute top-4 left-4 z-30
+                w-16 h-16 sm:w-20 sm:h-20
+                bg-white/15 backdrop-blur-md
+                border border-white/40
+                rounded-full
+                flex flex-col items-center justify-center
+                shadow-[0_0_24px_rgba(255,255,255,0.4)]
+                text-white">
+      <span class="text-base sm:text-lg font-extrabold leading-none">30%</span>
+      <span class="text-[9px] sm:text-[11px] font-semibold text-[#ffc911] tracking-wide mt-0.5">OFF</span>
     </div>
 
     <!-- Plant Card (NO SHAPE CHANGE) -->
@@ -117,65 +121,65 @@
     For <span class="text-[#e3de61]">Your</span> Space
   </h2>
 
-  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 
-              gap-10 sm:gap-12 md:gap-16 
+  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4
+              gap-10 sm:gap-12 md:gap-16
               px-4 sm:px-10 mt-14">
 
-    <!-- Card 1 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] 
+    <!-- Card 1 — Indoor -->
+    <a href="{% url 'plants' %}#indoor" class="flex flex-col items-center group">
+      <div class="bg-[#1f4529]
                   w-32 h-32 sm:w-44 sm:h-44 md:w-60 md:h-60 lg:w-72 lg:h-72
-                  flex justify-center items-center 
+                  flex justify-center items-center
                   rounded-tl-[50%] rounded-br-[50%]
-                  shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant2.png' %}" 
-             alt="Indoor Plants" 
+                  shadow-xl group-hover:scale-105 transition-transform duration-300">
+        <img src="{% static 'images/plant2.png' %}"
+             alt="Indoor Plants"
              class="h-20 sm:h-32 md:h-44 lg:h-56 object-contain drop-shadow-lg">
       </div>
-      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black">Indoor Plants</p>
-    </div>
+      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black group-hover:text-[#1f4529]">Indoor Plants</p>
+    </a>
 
-    <!-- Card 2 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] 
+    <!-- Card 2 — Outdoor -->
+    <a href="{% url 'plants' %}#outdoor" class="flex flex-col items-center group">
+      <div class="bg-[#1f4529]
                   w-32 h-32 sm:w-44 sm:h-44 md:w-60 md:h-60 lg:w-72 lg:h-72
-                  flex justify-center items-center 
+                  flex justify-center items-center
                   rounded-tl-[50%] rounded-br-[50%]
-                  shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant3.png' %}" 
-             alt="Outdoor Plants" 
+                  shadow-xl group-hover:scale-105 transition-transform duration-300">
+        <img src="{% static 'images/plant3.png' %}"
+             alt="Outdoor Plants"
              class="h-20 sm:h-32 md:h-44 lg:h-56 object-contain drop-shadow-lg">
       </div>
-      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black">Outdoor Plants</p>
-    </div>
+      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black group-hover:text-[#1f4529]">Outdoor Plants</p>
+    </a>
 
-    <!-- Card 3 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] 
+    <!-- Card 3 — Flowering -->
+    <a href="{% url 'plants' %}#flowering" class="flex flex-col items-center group">
+      <div class="bg-[#1f4529]
                   w-32 h-32 sm:w-44 sm:h-44 md:w-60 md:h-60 lg:w-72 lg:h-72
-                  flex justify-center items-center 
+                  flex justify-center items-center
                   rounded-tl-[50%] rounded-br-[50%]
-                  shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant4.png' %}" 
-             alt="Flowering Plants" 
+                  shadow-xl group-hover:scale-105 transition-transform duration-300">
+        <img src="{% static 'images/plant4.png' %}"
+             alt="Flowering Plants"
              class="h-20 sm:h-32 md:h-44 lg:h-56 object-contain drop-shadow-lg">
       </div>
-      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black">Flowering Plants</p>
-    </div>
+      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black group-hover:text-[#1f4529]">Flowering Plants</p>
+    </a>
 
-    <!-- Card 4 -->
-    <div class="flex flex-col items-center">
-      <div class="bg-[#1f4529] 
+    <!-- Card 4 — Fruit -->
+    <a href="{% url 'plants' %}#fruit" class="flex flex-col items-center group">
+      <div class="bg-[#1f4529]
                   w-32 h-32 sm:w-44 sm:h-44 md:w-60 md:h-60 lg:w-72 lg:h-72
-                  flex justify-center items-center 
+                  flex justify-center items-center
                   rounded-tl-[50%] rounded-br-[50%]
-                  shadow-xl hover:scale-105 transition-transform duration-300">
-        <img src="{% static 'images/plant5.png' %}" 
-             alt="Fruit Plants" 
+                  shadow-xl group-hover:scale-105 transition-transform duration-300">
+        <img src="{% static 'images/plant5.png' %}"
+             alt="Fruit Plants"
              class="h-20 sm:h-32 md:h-44 lg:h-56 object-contain drop-shadow-lg">
       </div>
-      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black">Fruit Plants</p>
-    </div>
+      <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-semibold text-black group-hover:text-[#1f4529]">Fruit Plants</p>
+    </a>
 
   </div>
 
@@ -185,89 +189,169 @@
 
 
 <!-- 🌿 BEST SELLING -->
-<section class="bg-[#1f4529] py-16 text-center">
+<section class="bg-[#1f4529] py-16 sm:py-20 text-center">
 
-  <!-- Heading -->
-  <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#f6e27f] mb-12">
+  <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#f6e27f] mb-10 sm:mb-16">
     Our Best Selling
   </h2>
 
-  <!-- Card Container -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 
-              gap-10 md:gap-12 px-6 md:px-20 place-items-center">
+  <!--
+    True pill/capsule shape:  overflow-hidden + rounded-full clips image & content to the pill.
+    Side cards: pushed DOWN (mt-10 md:mt-14) so center sits higher = "raised" featured look.
+    Dynamic: uses DB products. Static: uses hardcoded plant images.
+  -->
+  <div class="flex flex-col sm:flex-row justify-center items-start
+              gap-8 sm:gap-10 md:gap-14 px-6 md:px-20">
 
-    <!-- Card 1 -->
-    <div class="bg-white/15 backdrop-blur-lg border border-white/30 
-                rounded-[100px] sm:rounded-[130px] md:rounded-[140px]
-                p-6 sm:p-8 w-64 sm:w-72 md:w-80 
-                text-white flex flex-col items-center
-                shadow-[0_8px_32px_rgba(0,0,0,0.3)]
-                hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)]
-                transition duration-500">
-      
-      <img src="{% static 'images/plant6.png' %}" 
-           alt="Redrose Money Plant" 
-           class="h-44 sm:h-52 md:h-56 mx-auto mb-8 drop-shadow-lg">
+    {% if featured_products %}
 
-      <h3 class="text-lg sm:text-xl font-semibold">Redrose Money Plant</h3>
-      <p class="text-xs sm:text-sm text-gray-200 mt-1">Outdoor Plant</p>
-      <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
+      {% for product in featured_products %}
 
-      <button class="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/30 
-                     rounded-full text-white font-medium shadow-md 
-                     hover:bg-[#ffc911] hover:text-black transition duration-300">
-        Buy Now
-      </button>
-    </div>
+      {% if forloop.counter == 2 %}
+      <!-- CENTER card — taller, featured, pushed DOWN -->
+      <div class="overflow-hidden rounded-full backdrop-blur-lg border border-white/30
+                  bg-white/20 text-white mx-auto
+                  w-52 sm:w-56 md:w-60
+                  mt-8 sm:mt-12 md:mt-16
+                  shadow-[0_20px_60px_rgba(0,0,0,0.6)]
+                  hover:shadow-[0_24px_72px_rgba(255,255,255,0.2)]
+                  transition duration-500">
+        <div class="flex justify-center pt-8 px-6 pb-2">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                 class="h-36 sm:h-40 md:h-44 w-auto object-contain drop-shadow-xl">
+          {% else %}
+            <img src="{% static 'images/plant7a.png' %}" alt="{{ product.name }}"
+                 class="h-36 sm:h-40 md:h-44 w-auto object-contain drop-shadow-xl opacity-80">
+          {% endif %}
+        </div>
+        <div class="px-6 pb-8 pt-2 text-center">
+          <h3 class="text-sm sm:text-base font-bold leading-snug">{{ product.name }}</h3>
+          <p class="text-gray-300 mt-1 text-xs">{{ product.get_category_display }}</p>
+          <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹{{ product.price }}</p>
+          <a href="{% url 'product_detail' product.pk %}"
+             class="mt-4 inline-block px-5 py-1.5 bg-white/10 border border-white/30
+                    rounded-full text-white font-semibold text-xs shadow-md
+                    hover:bg-[#ffc911] hover:text-black transition duration-300">
+            Buy Now
+          </a>
+        </div>
+      </div>
 
-    <!-- Card 2 (Raised on Desktop) -->
-    <div class="bg-white/15 backdrop-blur-lg border border-white/30 
-                rounded-[100px] sm:rounded-[130px] md:rounded-[140px]
-                p-6 sm:p-8 w-64 sm:w-72 md:w-80 
-                text-white flex flex-col items-center
-                shadow-[0_8px_32px_rgba(0,0,0,0.4)]
-                mt-4 sm:mt-6 md:mt-16
-                hover:shadow-[0_8px_40px_rgrgba(255,255,255,0.2)]
-                transition duration-500">
-      
-      <img src="{% static 'images/plant7a.png' %}" 
-           alt="Green Money Plant" 
-           class="h-44 sm:h-52 md:h-56 mx-auto mb-8 drop-shadow-lg">
+      {% else %}
+      <!-- SIDE card — shorter, stays at TOP (mt-0), same width as center -->
+      <div class="overflow-hidden rounded-full backdrop-blur-lg border border-white/20
+                  bg-white/10 text-white mx-auto
+                  w-52 sm:w-56 md:w-60
+                  mt-0
+                  shadow-[0_8px_32px_rgba(0,0,0,0.4)]
+                  hover:shadow-[0_12px_44px_rgba(255,255,255,0.15)]
+                  transition duration-500">
+        <div class="flex justify-center pt-8 px-6 pb-2">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                 class="h-36 sm:h-40 md:h-44 w-auto object-contain drop-shadow-xl">
+          {% else %}
+            <img src="{% static 'images/plant6.png' %}" alt="{{ product.name }}"
+                 class="h-36 sm:h-40 md:h-44 w-auto object-contain drop-shadow-xl opacity-80">
+          {% endif %}
+        </div>
+        <div class="px-6 pb-8 pt-2 text-center">
+          <h3 class="text-sm sm:text-base font-bold leading-snug">{{ product.name }}</h3>
+          <p class="text-gray-300 mt-1 text-xs">{{ product.get_category_display }}</p>
+          <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹{{ product.price }}</p>
+          <a href="{% url 'product_detail' product.pk %}"
+             class="mt-4 inline-block px-5 py-1.5 bg-white/10 border border-white/30
+                    rounded-full text-white font-semibold text-xs shadow-md
+                    hover:bg-[#ffc911] hover:text-black transition duration-300">
+            Buy Now
+          </a>
+        </div>
+      </div>
+      {% endif %}
 
-      <h3 class="text-lg sm:text-xl font-semibold">Green Money Plant</h3>
-      <p class="text-xs sm:text-sm text-gray-200 mt-1">Indoor Plant</p>
-      <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
+      {% endfor %}
 
-      <button class="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/30 
-                     rounded-full text-white font-medium shadow-md 
-                     hover:bg-[#ffc911] hover:text-black transition duration-300">
-        Buy Now
-      </button>
-    </div>
+    {% else %}
 
-    <!-- Card 3 -->
-    <div class="bg-white/15 backdrop-blur-lg border border-white/30 
-                rounded-[100px] sm:rounded-[130px] md:rounded-[140px]
-                p-6 sm:p-8 w-64 sm:w-72 md:w-80 
-                text-white flex flex-col items-center
-                shadow-[0_8px_32px_rgba(0,0,0,0.3)]
-                hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)]
-                transition duration-500">
-      
-      <img src="{% static 'images/plant7.png' %}" 
-           alt="Golden Money Plant" 
-           class="h-44 sm:h-52 md:h-56 mx-auto mb-8 drop-shadow-lg">
+      <!-- ══ STATIC FALLBACK ══ -->
 
-      <h3 class="text-lg sm:text-xl font-semibold">Golden Money Plant</h3>
-      <p class="text-xs sm:text-sm text-gray-200 mt-1">Indoor Plant</p>
-      <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
+      <!-- Card 1 — Left side: Redrose Money Plant (mt-0 = stays at TOP) -->
+      <div class="overflow-hidden rounded-full backdrop-blur-lg border border-white/20
+                  bg-white/10 text-white mx-auto
+                  w-52 sm:w-56 md:w-60
+                  mt-0
+                  shadow-[0_8px_32px_rgba(0,0,0,0.4)]
+                  hover:shadow-[0_12px_44px_rgba(255,255,255,0.15)]
+                  transition duration-500">
+        <div class="flex justify-center pt-8 px-6 pb-2">
+          <img src="{% static 'images/plant6.png' %}" alt="Redrose Money Plant"
+               class="h-36 sm:h-40 md:h-44 w-auto object-contain drop-shadow-xl">
+        </div>
+        <div class="px-6 pb-8 pt-2 text-center">
+          <h3 class="text-sm sm:text-base font-bold leading-snug">Redrose Money Plant</h3>
+          <p class="text-gray-300 mt-1 text-xs">Outdoor Plant</p>
+          <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
+          <a href="{% url 'plants' %}#outdoor"
+             class="mt-4 inline-block px-5 py-1.5 bg-white/10 border border-white/30
+                    rounded-full text-white font-semibold text-xs shadow-md
+                    hover:bg-[#ffc911] hover:text-black transition duration-300">
+            Buy Now
+          </a>
+        </div>
+      </div>
 
-      <button class="mt-4 px-6 py-2 bg-white/10 backdrop-blur-md border border-white/30 
-                     rounded-full text-white font-medium shadow-md 
-                     hover:bg-[#ffc911] hover:text-black transition duration-300">
-        Buy Now
-      </button>
-    </div>
+      <!-- Card 2 — Center featured: Green Money Plant (pushed DOWN) -->
+      <div class="overflow-hidden rounded-full backdrop-blur-lg border border-white/30
+                  bg-white/20 text-white mx-auto
+                  w-52 sm:w-56 md:w-60
+                  mt-8 sm:mt-12 md:mt-16
+                  shadow-[0_20px_60px_rgba(0,0,0,0.6)]
+                  hover:shadow-[0_24px_72px_rgba(255,255,255,0.2)]
+                  transition duration-500">
+        <div class="flex justify-center pt-8 px-6 pb-2">
+          <img src="{% static 'images/plant7a.png' %}" alt="Green Money Plant"
+               class="h-36 sm:h-40 md:h-44 w-auto object-contain drop-shadow-xl">
+        </div>
+        <div class="px-6 pb-8 pt-2 text-center">
+          <h3 class="text-sm sm:text-base font-bold leading-snug">Green Money Plant</h3>
+          <p class="text-gray-300 mt-1 text-xs">Indoor Plant</p>
+          <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
+          <a href="{% url 'plants' %}#indoor"
+             class="mt-4 inline-block px-5 py-1.5 bg-white/10 border border-white/30
+                    rounded-full text-white font-semibold text-xs shadow-md
+                    hover:bg-[#ffc911] hover:text-black transition duration-300">
+            Buy Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3 — Right side: Golden Money Plant (mt-0 = stays at TOP) -->
+      <div class="overflow-hidden rounded-full backdrop-blur-lg border border-white/20
+                  bg-white/10 text-white mx-auto
+                  w-52 sm:w-56 md:w-60
+                  mt-0
+                  shadow-[0_8px_32px_rgba(0,0,0,0.4)]
+                  hover:shadow-[0_12px_44px_rgba(255,255,255,0.15)]
+                  transition duration-500">
+        <div class="flex justify-center pt-8 px-6 pb-2">
+          <img src="{% static 'images/plant7.png' %}" alt="Golden Money Plant"
+               class="h-36 sm:h-40 md:h-44 w-auto object-contain drop-shadow-xl">
+        </div>
+        <div class="px-6 pb-8 pt-2 text-center">
+          <h3 class="text-sm sm:text-base font-bold leading-snug">Golden Money Plant</h3>
+          <p class="text-gray-300 mt-1 text-xs">Indoor Plant</p>
+          <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹599</p>
+          <a href="{% url 'plants' %}#indoor"
+             class="mt-4 inline-block px-5 py-1.5 bg-white/10 border border-white/30
+                    rounded-full text-white font-semibold text-xs shadow-md
+                    hover:bg-[#ffc911] hover:text-black transition duration-300">
+            Buy Now
+          </a>
+        </div>
+      </div>
+
+    {% endif %}
 
   </div>
 </section>
@@ -311,11 +395,16 @@
         </p>
 
         <!-- Button -->
-        <button class="mt-6 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md 
-                       border border-white/30 text-white text-sm font-medium shadow-md 
-                       hover:bg-[#ffc911] hover:text-black transition">
+        <a href="{% url 'plant_care' %}"
+           class="mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-full
+                  bg-white/10 backdrop-blur-md border border-white/30
+                  text-white text-sm font-semibold shadow-md
+                  hover:bg-[#ffc911] hover:text-black transition duration-300">
           More Reading
-        </button>
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
 
         <!-- Slider dots -->
         <div class="mt-6 flex items-center gap-2">
@@ -349,11 +438,16 @@
           and accessible—from first-time plant parents to lifelong gardeners.
         </p>
 
-        <button
-          class="mt-5 px-5 py-2.5 rounded-full bg-[#1f4529] text-white text-sm font-medium
-          border border-[#1f4529]/30 hover:bg-[#ffc911] hover:text-black transition">
+        <a href="{% url 'about' %}"
+           class="mt-5 inline-flex items-center gap-2 px-6 py-2.5 rounded-full
+                  bg-[#1f4529] text-white text-sm font-semibold
+                  border border-[#1f4529]/30
+                  hover:bg-[#ffc911] hover:text-black transition duration-300">
           Know More
-        </button>
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
 
       <!-- Right Image -->
@@ -385,11 +479,16 @@
           <li>A nature-inspired shopping experience for every lifestyle</li>
         </ul>
 
-        <button
-          class="mt-5 px-5 py-2.5 rounded-full bg-[#1f4529] text-white text-sm font-medium
-          border border-[#1f4529]/30 hover:bg-[#ffc911] hover:text-black transition">
+        <a href="{% url 'about' %}"
+           class="mt-5 inline-flex items-center gap-2 px-6 py-2.5 rounded-full
+                  bg-[#1f4529] text-white text-sm font-semibold
+                  border border-[#1f4529]/30
+                  hover:bg-[#ffc911] hover:text-black transition duration-300">
           Know More
-        </button>
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
     </div>
 

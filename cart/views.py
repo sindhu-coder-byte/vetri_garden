@@ -28,19 +28,26 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     quantity = int(request.GET.get('quantity', 1))
     cart = request.session.get('cart', {})
+    key = str(product_id)
 
-    if str(product_id) in cart:
-        cart[str(product_id)]['quantity'] += quantity
+    if key in cart:
+        new_qty = cart[key]['quantity'] + quantity
+        if new_qty <= 0:
+            del cart[key]
+        else:
+            cart[key]['quantity'] = new_qty
     else:
-        cart[str(product_id)] = {
-            'name': product.name,
-            'price': float(product.price),
-            'quantity': quantity,
-            'image': product.image.url
-        }
+        if quantity > 0:
+            cart[key] = {
+                'name': product.name,
+                'price': float(product.price),
+                'quantity': quantity,
+                'image': product.image.url if product.image else '',
+            }
 
     request.session['cart'] = cart
-    return redirect('cart')
+    next_url = request.GET.get('next', '')
+    return redirect(next_url) if next_url else redirect('cart')
 
 
 def remove_from_cart(request, product_id):
@@ -54,99 +61,152 @@ def remove_from_cart(request, product_id):
 def checkout_view(request):
     cart = request.session.get('cart', {})
     total = sum(item['price'] * item['quantity'] for item in cart.values())
-    razorpay_amount = int(total * 100)
 
     context = {
         'cart': cart,
         'total': total,
         'razorpay_key': settings.RAZORPAY_KEY_ID,
-        'razorpay_amount': razorpay_amount,
+        'razorpay_amount': int(total * 100),
     }
     return render(request, 'cart/checkout.html', context)
 
 
 def place_order(request):
-    if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        postal_code = request.POST.get('postal_code')
-        payment_method = request.POST.get('payment_method')
-        cart = request.session.get('cart', {})
-        total = sum(item['price'] * item['quantity'] for item in cart.values())
+    if request.method != 'POST':
+        return redirect('cart')
 
-        order = Order.objects.create(
-            user=request.user if request.user.is_authenticated else None,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            phone=phone,
-            address=address,
-            city=city,
-            postal_code=postal_code,
-            total_amount=total,
-            payment_method=payment_method,
-            status="Pending"
+    cart = request.session.get('cart', {})
+    if not cart:
+        messages.error(request, "Your cart is empty.")
+        return redirect('cart')
+
+    first_name     = request.POST.get('first_name', '')
+    last_name      = request.POST.get('last_name', '')
+    email          = request.POST.get('email', '')
+    phone          = request.POST.get('phone', '')
+    address        = request.POST.get('address', '')
+    city           = request.POST.get('city', '')
+    postal_code    = request.POST.get('postal_code', '')
+    payment_method = request.POST.get('payment_method', 'COD')
+
+    total = sum(item['price'] * item['quantity'] for item in cart.values())
+
+    order = Order.objects.create(
+        user=request.user if request.user.is_authenticated else None,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        phone=phone,
+        address=address,
+        city=city,
+        postal_code=postal_code,
+        total_amount=total,
+        payment_method=payment_method,
+        status='Pending',
+    )
+
+    # Save each cart item as an OrderItem
+    for product_id, item in cart.items():
+        try:
+            product = Product.objects.get(id=int(product_id))
+        except Product.DoesNotExist:
+            product = None
+        subtotal = item['price'] * item['quantity']
+        OrderItem.objects.create(
+            order=order,
+            product=product,
+            quantity=item['quantity'],
+            price=item['price'],
+            subtotal=subtotal,
         )
 
-        # 🔹 Online Payment (Razorpay)
-        if payment_method == "Online":
+    # ── Online (Razorpay) ──────────────────────────────────────────────────
+    if payment_method == 'Online':
+        razorpay_order = razorpay_client.order.create({
+            "amount": int(total * 100),
+            "currency": "INR",
+            "payment_capture": 1,
+        })
+        order.razorpay_order_id = razorpay_order["id"]
+        order.save()
 
-            # DEBUG : check key values
-            print("\n -------------------------")
-            print("RAZORPAY KEY ID =", settings.RAZORPAY_KEY_ID)
-            print("RAZORPAY KEY SECRET =", settings.RAZORPAY_KEY_SECRET)
-            print("-------------------------\n")
+        # Keep order.id in session so payment_success can clear the cart
+        request.session['pending_order_id'] = order.id
 
-            razorpay_order = razorpay_client.order.create({
-                "amount": int(total * 100),  # amount in paisa
-                "currency": "INR",
-                "payment_capture": 1,  # MUST BE INTEGER
-            })
+        return render(request, 'cart/razorpay_payment.html', {
+            "order": order,
+            "razorpay_key": settings.RAZORPAY_KEY_ID,
+            "razorpay_order_id": razorpay_order["id"],
+            "razorpay_amount": int(total * 100),
+            "total": total,
+        })
 
-            order.razorpay_order_id = razorpay_order["id"]
-            order.save()
+    # ── Cash on Delivery ───────────────────────────────────────────────────
+    _send_order_confirmation_email(order, cart)
 
-            context = {
-                "order": order,
-                "razorpay_key": settings.RAZORPAY_KEY_ID,
-                "razorpay_order_id": razorpay_order["id"],
-                "razorpay_amount": int(total * 100),
-                "total": total,
-            }
-            return render(request, 'cart/razorpay_payment.html', context)
+    # Clear cart and force session save
+    request.session.pop('cart', None)
+    request.session.modified = True
 
-        # 🟢 Cash on Delivery
-        _send_order_confirmation_email(order, cart)
-        messages.success(request, "Order placed successfully with Cash on Delivery!")
-        return redirect('payment_success')
-
-    return redirect('cart')
+    messages.success(request, f"Order #{order.id} placed successfully! 🌿 Cash on Delivery confirmed.")
+    return redirect('payment_success')
 
 
+def payment_success(request):
+    if request.method == 'POST':
+        # Razorpay callback after user pays
+        razorpay_order_id  = request.POST.get('razorpay_order_id', '')
+        razorpay_payment_id = request.POST.get('razorpay_payment_id', '')
+        razorpay_signature = request.POST.get('razorpay_signature', '')
 
+        params = {
+            'razorpay_order_id':   razorpay_order_id,
+            'razorpay_payment_id': razorpay_payment_id,
+            'razorpay_signature':  razorpay_signature,
+        }
+
+        try:
+            razorpay_client.utility.verify_payment_signature(params)
+
+            # Update order status
+            order_id = request.session.pop('pending_order_id', None)
+            if order_id:
+                try:
+                    order = Order.objects.get(id=order_id)
+                    order.status = 'Paid'
+                    order.payment_id = razorpay_payment_id
+                    order.save()
+                    cart = request.session.get('cart', {})
+                    _send_order_confirmation_email(order, cart)
+                except Order.DoesNotExist:
+                    pass
+
+            # Clear cart and force session save
+            request.session.pop('cart', None)
+            request.session.modified = True
+            messages.success(request, "Payment successful! 🌿 Thank you for shopping with Vetri Garden.")
+
+        except razorpay.errors.SignatureVerificationError:
+            messages.error(request, "Payment verification failed. Please contact support.")
+
+    return render(request, 'cart/payment_success.html')
 
 
 def _send_order_confirmation_email(order, cart):
-    """Helper: sends order confirmation email safely."""
     try:
         email_context = {
-            'first_name': order.first_name,
-            'cart_items': list(cart.values()),
-            'order': order,
-            'total': order.total_amount,
-            'address': order.address,
-            'city': order.city,
-            'postal_code': order.postal_code,
-            'phone': order.phone,
+            'first_name':    order.first_name,
+            'cart_items':    list(cart.values()),
+            'order':         order,
+            'total':         order.total_amount,
+            'address':       order.address,
+            'city':          order.city,
+            'postal_code':   order.postal_code,
+            'phone':         order.phone,
             'payment_method': order.payment_method,
-            'year': datetime.now().year,
+            'year':          datetime.now().year,
         }
-
-        subject = f"Vetri Garden 🌿 Order #{order.id} Confirmation"
+        subject      = f"Vetri Garden 🌿 Order #{order.id} Confirmation"
         html_message = render_to_string('cart/order_confirmation.html', email_context)
         plain_message = strip_tags(html_message)
 
@@ -156,13 +216,7 @@ def _send_order_confirmation_email(order, cart):
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[order.email],
             html_message=html_message,
-            fail_silently=False,
+            fail_silently=True,
         )
-    except Exception as e:
+    except Exception:
         traceback.print_exc()
-        print("Email sending failed:", e)
-
-
-def payment_success(request):
-    messages.success(request, "Payment completed successfully! 🌿 Thank you for shopping with Vetri Garden.")
-    return render(request, 'cart/payment_success.html')

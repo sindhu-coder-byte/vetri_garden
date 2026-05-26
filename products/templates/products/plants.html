@@ -14,8 +14,48 @@
 
 <main class="bg-white min-h-screen py-1">
 
+  <!-- ===== Search & Sort ===== -->
+  <div class="max-w-3xl mx-auto px-4 sm:px-10 mt-8">
+    <form method="get" class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+      <input type="text" name="q" value="{{ query }}"
+             placeholder="Search plants by name..."
+             class="flex-1 px-5 py-3 rounded-full border-2 border-[#1f4529]
+                    text-[#1f4529] placeholder-[#1f4529]/50
+                    focus:outline-none focus:border-[#ffc911] focus:ring-2 focus:ring-[#ffc911]/30">
+
+      <select name="sort"
+              class="px-4 py-3 rounded-full border-2 border-[#1f4529]
+                     text-[#1f4529] bg-white focus:outline-none cursor-pointer">
+        <option value="name"      {% if sort == 'name'      %}selected{% endif %}>Name A–Z</option>
+        <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low → High</option>
+        <option value="price_desc"{% if sort == 'price_desc'%}selected{% endif %}>Price: High → Low</option>
+        <option value="newest"    {% if sort == 'newest'    %}selected{% endif %}>Newest First</option>
+      </select>
+
+      <button type="submit"
+              class="px-6 py-3 bg-[#1f4529] text-white rounded-full font-semibold
+                     hover:bg-[#ffc911] hover:text-black transition whitespace-nowrap">
+        Search
+      </button>
+
+      {% if query %}
+      <a href="{% url 'plants' %}"
+         class="px-5 py-3 border-2 border-[#1f4529] text-[#1f4529] rounded-full
+                hover:bg-red-50 transition text-center whitespace-nowrap">
+        Clear
+      </a>
+      {% endif %}
+    </form>
+
+    {% if query %}
+    <p class="mt-3 text-[#1f4529]/70 text-sm text-center">
+      Results for "<span class="font-semibold text-[#1f4529]">{{ query }}</span>"
+    </p>
+    {% endif %}
+  </div>
+
   <!-- ===== Sub Navigation with Icons ===== -->
-  <div class="sticky top-[90px] z-30 bg-white/90 backdrop-blur-md py-4 mt-10 shadow-md">
+  <div class="sticky top-[90px] z-30 bg-white/90 backdrop-blur-md py-4 mt-6 shadow-md">
     <div class="max-w-7xl mx-auto flex justify-center flex-wrap gap-4 sm:gap-6 text-[#1f4529] font-semibold text-base sm:text-lg">
       <a href="#indoor" class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">🪴 Indoor |</a>
       <a href="#outdoor" class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[#ffc911] hover:text-black transition">🌿 Outdoor |</a>
@@ -26,7 +66,12 @@
 
   <!-- ===== Indoor Plants ===== -->
   <section id="indoor" class="mt-20 px-4 sm:px-10">
-    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Indoor Plants</h3>
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10 flex items-center gap-3">
+      Indoor Plants
+      <span class="text-base font-medium bg-[#1f4529] text-white px-3 py-1 rounded-full">
+        {{ indoor_plants.count }}
+      </span>
+    </h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
 
@@ -61,7 +106,12 @@
 
   <!-- ===== Outdoor Plants ===== -->
   <section id="outdoor" class="mt-20 px-4 sm:px-10">
-    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Outdoor Plants</h3>
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10 flex items-center gap-3">
+      Outdoor Plants
+      <span class="text-base font-medium bg-[#1f4529] text-white px-3 py-1 rounded-full">
+        {{ outdoor_plants.count }}
+      </span>
+    </h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
 
@@ -96,7 +146,12 @@
 
   <!-- ===== Flowering Plants ===== -->
   <section id="flowering" class="mt-20 px-4 sm:px-10">
-    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Flowering Plants</h3>
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10 flex items-center gap-3">
+      Flowering Plants
+      <span class="text-base font-medium bg-[#1f4529] text-white px-3 py-1 rounded-full">
+        {{ flowering_plants.count }}
+      </span>
+    </h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
 
@@ -130,8 +185,13 @@
   </section>
 
   <!-- ===== Fruit Plants ===== -->
-  <section id="fruit" class="mt-20 px-4 sm:px-10 pb-16">
-    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10">Fruit Plants</h3>
+  <section id="fruit" class="mt-20 px-4 sm:px-10">
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10 flex items-center gap-3">
+      Fruit Plants
+      <span class="text-base font-medium bg-[#1f4529] text-white px-3 py-1 rounded-full">
+        {{ fruit_plants.count }}
+      </span>
+    </h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
 
@@ -163,6 +223,46 @@
 
     </div>
   </section>
+
+  <!-- ===== Other / Special Plants ===== -->
+  {% if other_plants.count %}
+  <section id="others" class="mt-20 px-4 sm:px-10 pb-16">
+    <h3 class="text-2xl sm:text-3xl font-bold text-[#1f4529] mb-10 flex items-center gap-3">
+      Other Plants
+      <span class="text-base font-medium bg-[#1f4529] text-white px-3 py-1 rounded-full">
+        {{ other_plants.count }}
+      </span>
+    </h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
+
+      {% for product in other_plants %}
+      <article class="bg-[#416457] text-white rounded-3xl sm:rounded-[140px]
+        p-6 sm:p-8 w-full max-w-xs mx-auto flex flex-col items-center shadow-xl
+        hover:-translate-y-1 transition-all duration-300">
+
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="h-40 sm:h-48 w-auto object-contain mb-4" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'images/plant1.png' %}" class="h-40 sm:h-48 w-auto object-contain mb-4 opacity-70">
+        {% endif %}
+
+        <h3 class="text-lg sm:text-xl font-semibold text-center">{{ product.name }}</h3>
+        <p class="text-white/70 text-sm sm:text-base">{{ product.get_category_display }}</p>
+        <p class="mt-2 text-lg font-bold">₹{{ product.price }}</p>
+
+        <a href="{% url 'product_detail' product.pk %}"
+           class="mt-4 px-6 py-2 bg-white/10 border border-white/30 rounded-full
+           hover:bg-[#ffc911] hover:text-black transition">
+          View Details
+        </a>
+
+      </article>
+      {% endfor %}
+
+    </div>
+  </section>
+  {% endif %}
 
 </main>
 {% endblock %}

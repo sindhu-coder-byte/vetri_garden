@@ -59,6 +59,26 @@
         <span class="text-[#1F4529] font-semibold">4.0</span>
       </div>
 
+      <!-- Stock Status -->
+      <div class="mt-2">
+        {% if product.stock > 10 %}
+          <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold bg-green-100 text-green-800">
+            <span class="w-2 h-2 bg-green-500 rounded-full inline-block"></span>
+            In Stock ({{ product.stock }} available)
+          </span>
+        {% elif product.stock > 0 %}
+          <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">
+            <span class="w-2 h-2 bg-yellow-500 rounded-full inline-block"></span>
+            Low Stock — Only {{ product.stock }} left
+          </span>
+        {% else %}
+          <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold bg-red-100 text-red-800">
+            <span class="w-2 h-2 bg-red-500 rounded-full inline-block"></span>
+            Out of Stock
+          </span>
+        {% endif %}
+      </div>
+
       <!-- Size Options -->
       <div class="flex flex-wrap gap-2 mt-4">
        {% for size in sizes %}
@@ -95,12 +115,20 @@
         </div>
 
         <!-- Buy Now -->
+        {% if product.stock > 0 %}
         <a id="buy-now"
            href="{% url 'add_to_cart' product.id %}?quantity=1"
            class="px-5 sm:px-6 py-3 bg-[#1F4529] text-white font-semibold rounded-full
                   hover:bg-[#ffc911] hover:text-black transition shadow-md text-sm sm:text-base">
           Buy Now
         </a>
+        {% else %}
+        <button disabled
+                class="px-5 sm:px-6 py-3 bg-gray-300 text-gray-500 font-semibold rounded-full
+                       cursor-not-allowed text-sm sm:text-base">
+          Out of Stock
+        </button>
+        {% endif %}
 
       </div>
 
@@ -120,27 +148,74 @@
 
 </main>
 
+<!-- ===== Related Plants ===== -->
+{% if related_products %}
+<section class="bg-[#1f4529] py-16 text-center">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <h2 class="text-2xl sm:text-3xl font-bold text-[#f6e27f] mb-12">
+      You May Also Like
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4
+                gap-8 sm:gap-10 place-items-center">
+
+      {% for rp in related_products %}
+      <article class="bg-white/15 backdrop-blur-lg border border-white/30
+          rounded-[100px] sm:rounded-[130px] md:rounded-[140px]
+          p-6 sm:p-8 w-64 sm:w-72
+          text-white flex flex-col items-center
+          shadow-[0_8px_32px_rgba(0,0,0,0.3)]
+          hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)]
+          transition duration-500">
+
+        {% if rp.image %}
+          <img src="{{ rp.image.url }}" alt="{{ rp.name }}"
+               class="h-40 sm:h-48 mx-auto mb-6 drop-shadow-lg object-contain">
+        {% else %}
+          <img src="{% static 'images/plant1.png' %}" alt="{{ rp.name }}"
+               class="h-40 sm:h-48 mx-auto mb-6 drop-shadow-lg object-contain opacity-70">
+        {% endif %}
+
+        <h3 class="text-base sm:text-lg font-semibold text-center">{{ rp.name }}</h3>
+        <p class="text-xs sm:text-sm text-gray-200 mt-1">{{ rp.get_category_display }}</p>
+        <p class="text-lg font-bold mt-2 text-[#f6e27f]">₹{{ rp.price }}</p>
+
+        <a href="{% url 'product_detail' rp.pk %}"
+           class="mt-4 px-5 py-2 bg-white/10 backdrop-blur-md border border-white/30
+                  rounded-full text-white font-medium shadow-md
+                  hover:bg-[#ffc911] hover:text-black transition duration-300 text-sm">
+          View Details
+        </a>
+      </article>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <!-- JS: Quantity Handler -->
 <script>
   const quantityInput = document.getElementById('quantity');
-  const increaseBtn = document.getElementById('increase');
-  const decreaseBtn = document.getElementById('decrease');
-  const buyNowBtn = document.getElementById('buy-now');
+  const increaseBtn   = document.getElementById('increase');
+  const decreaseBtn   = document.getElementById('decrease');
+  const buyNowBtn     = document.getElementById('buy-now');
 
-  increaseBtn.addEventListener('click', () => {
-    quantityInput.value = parseInt(quantityInput.value) + 1;
-    updateCartLink();
-  });
-
-  decreaseBtn.addEventListener('click', () => {
-    if (parseInt(quantityInput.value) > 1) {
-      quantityInput.value = parseInt(quantityInput.value) - 1;
+  if (buyNowBtn) {
+    increaseBtn.addEventListener('click', () => {
+      quantityInput.value = parseInt(quantityInput.value) + 1;
       updateCartLink();
-    }
-  });
+    });
 
-  function updateCartLink() {
-    buyNowBtn.href = "{% url 'add_to_cart' product.id %}?quantity=" + quantityInput.value;
+    decreaseBtn.addEventListener('click', () => {
+      if (parseInt(quantityInput.value) > 1) {
+        quantityInput.value = parseInt(quantityInput.value) - 1;
+        updateCartLink();
+      }
+    });
+
+    function updateCartLink() {
+      buyNowBtn.href = "{% url 'add_to_cart' product.id %}?quantity=" + quantityInput.value;
+    }
   }
 </script>
 
