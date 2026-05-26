@@ -1,0 +1,24 @@
+{
+  "name": "vetri_garden",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/css/tailwind.src.css -o ./static/css/tailwind.min.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sindhu-coder-byte/vetri_garden.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sindhu-coder-byte/vetri_garden/issues"
+  },
+  "homepage": "https://github.com/sindhu-coder-byte/vetri_garden#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
