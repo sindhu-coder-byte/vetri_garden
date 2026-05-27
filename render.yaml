@@ -7,6 +7,8 @@ services:
     buildCommand: >
       pip install -r requirements.txt &&
       python manage.py collectstatic --no-input &&
+      mkdir -p staticfiles/css &&
+      cp static/css/tailwind.min.css staticfiles/css/tailwind.min.css &&
       python manage.py migrate
     startCommand: gunicorn vetri_garden.wsgi:application
     envVars:
